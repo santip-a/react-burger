@@ -2,23 +2,16 @@ import React from 'react';
 import burgerConstructor from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon  } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerFiling from './burger-filling/burger-filling';
-import OrderDetails from '../modal/modal-order-details/modal-order-details';
+import ModalOrderDetails from '../modal/modal-order-details/modal-order-details';
 import PropTypes from 'prop-types';
 import {ingredientForPropTypes} from '../../constants/constants';
+import Modal from "../modal/modal";
 
 const BurgerConstructor = (props) => {
   const data = props.dataList;
   const [openModal,setOpenModal] = React.useState(false);
 
   const bunItem = data.find(item => item.type === 'bun');
-
-  BurgerConstructor.propTypes = {
-    dataList: PropTypes.arrayOf(
-      PropTypes.shape(ingredientForPropTypes).isRequired      
-      ).isRequired
-  };
-
-  
 
   return (
     <section className='mt-25 pr-0'>
@@ -58,15 +51,20 @@ const BurgerConstructor = (props) => {
         </div>
         <Button type="primary" size="large" onClick={() => {setOpenModal(true)}}>Оформить заказ</Button>
       </div>
-
-      <OrderDetails open={openModal} onClose={setOpenModal} />
-
+      
+      <Modal open={openModal} onClose={() => setOpenModal(false)}>
+        <ModalOrderDetails  />
+      </Modal>
+      
     </section>
-
   )
-
-  
-  
 }
+
+
+BurgerConstructor.propTypes = {
+  dataList: PropTypes.arrayOf(
+    PropTypes.shape(ingredientForPropTypes).isRequired      
+    ).isRequired
+};
 
 export default BurgerConstructor;

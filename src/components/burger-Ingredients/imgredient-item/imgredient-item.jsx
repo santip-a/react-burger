@@ -1,4 +1,3 @@
-import React from 'react';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import imgredientItem from './imgredient-item.module.css';
 import PropTypes from 'prop-types';
@@ -6,16 +5,7 @@ import {ingredientForPropTypes} from '../../../constants/constants';
 
 const ImgredientItem = (props) => {
 
-  ImgredientItem.propTypes = {
-    item: PropTypes.shape(ingredientForPropTypes).isRequired,
-    onClose: PropTypes.func.isRequired,
-    setElem: PropTypes.func.isRequired
-  };
-  
-
-  const item = props.item;
-  const onClose = props.onClose;
-  const setElem = props.setElem;
+    const {item, onClose, setElem} = props;
 
   return (
     <li className={`${imgredientItem.item} mt-6 mb-1`} onClick={()=> {onClose(true); setElem(item)}}>
@@ -28,11 +18,14 @@ const ImgredientItem = (props) => {
       <Counter count={1} size='default' />
   
     </li>
-  )
-
-  
+  )  
 }
 
+ImgredientItem.propTypes = {
+  item: PropTypes.shape(ingredientForPropTypes).isRequired,
+  onClose: PropTypes.func.isRequired,
+  setElem: PropTypes.func.isRequired
+};
 
 
 export default ImgredientItem;

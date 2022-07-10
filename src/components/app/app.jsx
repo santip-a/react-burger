@@ -13,7 +13,12 @@ const App = () => {
 
   React.useEffect(() => {
     fetch(linkRequestData)
-    .then(res => res.json())
+    .then(res => {
+      if (res.ok) {
+          return res.json();
+      }
+      return Promise.reject(`Ошибка ${res.status}`);
+  })
     .then(data => {setDataIngredients(data.data); setOKLoad(true) })
     .catch((err) => { setErrorLoad(true) })
   },[]);

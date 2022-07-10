@@ -6,18 +6,7 @@ import modalStyles from './modal.module.css';
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 
-
 const Modal = ({open, onClose, children }) => {
-
-  const [modalWindow, setModalWindow] = React.useState(null);
-
-  React.useEffect(() => {
-    const modalElement = document.createElement('div');
-    modalElement.setAttribute('id', 'modal-window');
-    document.body.appendChild(modalElement); 
-    setModalWindow(modalElement);
-
-  },[])
 
   React.useEffect(() => {
     const pressEsc = (e) => {
@@ -28,27 +17,27 @@ const Modal = ({open, onClose, children }) => {
     document.addEventListener('keydown', pressEsc);
     return () => document.removeEventListener('keydown', pressEsc);
 
-}, [])
+  }, [])
 
   if (!open) return null;
-  return (
-    ReactDOM.createPortal(
-      (
-          <>
-              <ModalOverlay onClick={onClose} />
-              <div className={modalStyles.window} >
-                  <button className={`${modalStyles.buttonClose} mt-10 mr-10`} onClick={onClose}>
-                      <CloseIcon type='primary' />
-                  </button>
-                  {children}
-              </div>
-          </>
-      ), modalWindow)
-  )
 
+  return ReactDOM.createPortal (
+    ( <>
+     <div className={modalStyles.window}>
+       <button className={`${modalStyles.buttonClose} mt-15 mr-10`} onClick={onClose}>
+         <CloseIcon />
+       </button>
+       {children}
+     </div>
+     <ModalOverlay onCloseOverlay={onClose}/>
+     </>), document.getElementById("modal")
+   )
 }
-// ModalOverlay.propTypes = {
-//     onClick: PropTypes.func.isRequired
-// }
+
+Modal.propTypes = {
+  children: PropTypes.element.isRequired,
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
+}
 
 export default Modal;

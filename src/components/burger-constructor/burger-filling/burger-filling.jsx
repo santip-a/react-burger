@@ -1,4 +1,3 @@
-import React from 'react';
 import burgerFiling from './burger-filling.module.css'
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from 'prop-types';
@@ -7,12 +6,7 @@ import {ingredientForPropTypes} from '../../../constants/constants';
 const BurgerFiling = (props) => {
   const item = props.elem;
 
-  BurgerFiling.propTypes = {
-    elem: PropTypes.shape(ingredientForPropTypes).isRequired
-  };
-
-
-  return (
+    return (
     <li className={`${burgerFiling.item } mr-2`}>
       <DragIcon />
       <ConstructorElement
@@ -23,5 +17,9 @@ const BurgerFiling = (props) => {
     </li>
   )
 }
+
+BurgerFiling.propTypes = {
+  elem: PropTypes.shape(ingredientForPropTypes).isRequired
+};
 
 export default BurgerFiling;

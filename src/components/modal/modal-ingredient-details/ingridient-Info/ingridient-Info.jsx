@@ -3,11 +3,6 @@ import PropTypes from 'prop-types';
 import {ingredientForPropTypes} from '../../../../constants/constants';
 
 const IngridientInfo = ({info }) => {
-
-  IngridientInfo.propTypes = {
-    info: PropTypes.shape(ingredientForPropTypes).isRequired 
-  };
-
   return (
     <ul className={`${ingridientInfo.list} text_type_main-default text_color_inactive` }>
       <li className={ingridientInfo.item}>
@@ -28,7 +23,10 @@ const IngridientInfo = ({info }) => {
       </li>
     </ul> 
   ) 
-
 }
+
+IngridientInfo.propTypes = {
+  info: PropTypes.shape(ingredientForPropTypes).isRequired 
+};
 
 export default IngridientInfo;
