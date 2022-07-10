@@ -1,0 +1,13 @@
+.section {
+  max-width: 650px;
+  width: 100%;
+}
+
+.artile {
+  display: flex;
+}
+
+.list {
+  max-height: 65vh;
+  overflow-y: scroll;
+}

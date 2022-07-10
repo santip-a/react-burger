@@ -1,0 +1,16 @@
+.window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 520px;
+  margin: 0 auto;  
+}
+
+.title {
+  box-sizing: border-box;
+}
+
+.ingridient {
+  text-align: center;
+}
+

@@ -1,0 +1,21 @@
+.window {  
+  width: 720px;
+  left: 50%;
+  top: 50%;  
+  transform: translate(-50%, -50%);
+  background-color: #1c1c21;
+  border-radius: 40px;
+  border: 1px solid rgba(76, 76, 255, 2);    
+  position: fixed;
+  overflow: hidden;
+  z-index: 6;  
+}
+
+.buttonClose {  
+  top: 0;
+  right: 0;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  cursor: pointer;
+}
