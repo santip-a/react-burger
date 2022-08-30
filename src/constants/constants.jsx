@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import React from 'react';
+
 
 export const linkRequestData = 'https://norma.nomoreparties.space/api/ingredients'
 
@@ -22,3 +24,5 @@ export const ingredientForPropTypes = {
   "image_large": PropTypes.string.isRequired,
   "__v": PropTypes.number.isRequired,
 }
+
+export const BurgerConstructorContext = React.createContext();

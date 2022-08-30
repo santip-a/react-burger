@@ -3,13 +3,13 @@ import style from './app.module.css';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-Ingredients/burger-ingredients';
 import AppHeader from '../app-header/app-header';
-import {linkRequestData} from '../../constants/constants'
-
+import {linkRequestData, BurgerConstructorContext} from '../../constants/constants';
 
 const App = () => {
   const [dataIngredients, setDataIngredients] = React.useState ([]);
   const [errorLoad, setErrorLoad ] = React.useState(false);
   const [okLoad, setOKLoad] = React.useState(false);
+   
 
   React.useEffect(() => {
     fetch(linkRequestData)
@@ -32,7 +32,10 @@ const App = () => {
           {okLoad && (
             <>
               <BurgerIngredients dataList={dataIngredients} />
-              <BurgerConstructor dataList={dataIngredients}/>
+              <BurgerConstructorContext.Provider value={dataIngredients}>
+                <BurgerConstructor/>
+              </BurgerConstructorContext.Provider>
+              
             </>
           )}
         </main>
