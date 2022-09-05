@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 
-
-export const linkRequestData = 'https://norma.nomoreparties.space/api/ingredients'
 
 export const nameTypeIngredients = [
   {nameEn: 'bun', nameRu: 'Булки'}, 
   {nameEn: 'sauce', nameRu: 'Соусы'}, 
   {nameEn: 'main', nameRu: 'Начинки'}
 ];
+
+export const baseUrl = 'https://norma.nomoreparties.space/api';
+
 
 export const ingredientForPropTypes = {
   "_id": PropTypes.string.isRequired,
@@ -25,4 +25,4 @@ export const ingredientForPropTypes = {
   "__v": PropTypes.number.isRequired,
 }
 
-export const BurgerConstructorContext = React.createContext();
+

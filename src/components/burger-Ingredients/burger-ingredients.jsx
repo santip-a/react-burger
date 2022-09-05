@@ -1,57 +1,78 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import burgerIngredients from './burger-ingredients.module.css';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import ModalIngridientDetails from '../modal/modal-ingredient-details/modal-ingredient-details';
+import IngridientDetails from '../modal/modal-ingredient-details/modal-ingredient-details';
 import ImgredientList from './imgredient-list/imgredient-list';
-import {nameTypeIngredients} from '../../constants/constants';
-import PropTypes from 'prop-types';
-import {ingredientForPropTypes} from '../../constants/constants';
+import { nameTypeIngredients } from '../../constants/constants';
 import Modal from '../modal/modal';
+import { BurgerConstructorContext } from '../../context/context';
 
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = () => {
   const [current, setCurrent] = React.useState('bun');
-  const [openModal,setOpenModal] = React.useState(false);
-  const [elemIngridient,setElemIngridient] = React.useState(props.dataList[0]);
- 
+  const [openModal, setOpenModal] = React.useState(false);
+  const data = React.useContext(BurgerConstructorContext);
+  const [elemIngridient, setElemIngridient] = React.useState(data[0]);
+
+  const bunRef = React.useRef();
+  const sauceRef = React.useRef();
+  const mainRef = React.useRef();
+
+  const scrollIngedients = (e) => {
+    setCurrent(e);
+    switch(e) {
+      case 'bun' :
+        bunRef.current.scrollIntoView({behavior: "smooth"});
+        break;
+    }
+    switch(e) {
+      case 'sauce' :
+        sauceRef.current.scrollIntoView({behavior: "smooth"});
+        break;
+    }
+    switch(e) {
+      case 'main' :
+        mainRef.current.scrollIntoView({behavior: "smooth"});
+        break;
+    }
+  }
+
+
   return (
     <section className={`${burgerIngredients.section} pt-10 `}>
       <h1 className="text text_type_main-large ">Соберите бургер</h1>
-      <div className={`${burgerIngredients.artile} mt-5 mb-10 ` }>
-        <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
+      <div className={`${burgerIngredients.artile} mt-5 mb-10 `}>
+        <Tab value="bun" active={current === 'bun'} onClick={scrollIngedients}>
           Булки
         </Tab>
-        <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
+        <Tab value="sauce" active={current === 'sauce'} onClick={scrollIngedients}>
           Соусы
         </Tab>
-        <Tab value="main" active={current === 'main'} onClick={setCurrent}>
+        <Tab value="main" active={current === 'main'} onClick={scrollIngedients}>
           Начинки
         </Tab>
       </div>
       <div className={`${burgerIngredients.list} custom-scroll`}>
         {
           nameTypeIngredients.map(item => (
-            <ImgredientList key={item.nameEn} 
-              elem={item} 
-              dataList={props.dataList} 
-              onClose={setOpenModal} 
+            <ImgredientList key={item.nameEn}
+              elem={item}
+              onClose={setOpenModal}
               setElem={setElemIngridient} 
+              bunRef = {bunRef}
+              sauceRef = {sauceRef}
+              mainRef = {mainRef}
             />)
-        )}
+          )}
       </div>
-      
+
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
-        <ModalIngridientDetails elem={elemIngridient} />
+        <IngridientDetails elem={elemIngridient} />
       </Modal>
 
     </section>
   )
 }
 
-BurgerIngredients.propTypes = {
-  dataList: PropTypes.arrayOf(
-    PropTypes.shape(ingredientForPropTypes).isRequired      
-    ).isRequired
-};
 
 export default BurgerIngredients;

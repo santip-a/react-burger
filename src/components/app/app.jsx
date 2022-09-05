@@ -3,7 +3,9 @@ import style from './app.module.css';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-Ingredients/burger-ingredients';
 import AppHeader from '../app-header/app-header';
-import {linkRequestData, BurgerConstructorContext} from '../../constants/constants';
+import {baseUrl} from '../../constants/constants';
+import {BurgerConstructorContext} from '../../context/context';
+import {checkResponse} from '../../utils/utils';
 
 const App = () => {
   const [dataIngredients, setDataIngredients] = React.useState ([]);
@@ -11,14 +13,11 @@ const App = () => {
   const [okLoad, setOKLoad] = React.useState(false);
    
 
+
+
   React.useEffect(() => {
-    fetch(linkRequestData)
-    .then(res => {
-      if (res.ok) {
-          return res.json();
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
-  })
+    fetch(baseUrl + '/ingredients')
+    .then(checkResponse)
     .then(data => {setDataIngredients(data.data); setOKLoad(true) })
     .catch((err) => { setErrorLoad(true) })
   },[]);
@@ -30,13 +29,12 @@ const App = () => {
         {errorLoad && <p> --- Ошибка загрузки данных с сервера ---</p>}
         <main className={style.main}>
           {okLoad && (
-            <>
-              <BurgerIngredients dataList={dataIngredients} />
-              <BurgerConstructorContext.Provider value={dataIngredients}>
-                <BurgerConstructor/>
-              </BurgerConstructorContext.Provider>
               
-            </>
+            <BurgerConstructorContext.Provider value={dataIngredients}>
+              <BurgerIngredients />
+              <BurgerConstructor/>
+            </BurgerConstructorContext.Provider>
+              
           )}
         </main>
       </div>
