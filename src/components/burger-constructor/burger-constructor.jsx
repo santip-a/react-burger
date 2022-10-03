@@ -1,109 +1,169 @@
-import React from 'react';
+import React, {useMemo, useState} from 'react';
 import burgerConstructor from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerFiling from './burger-filling/burger-filling';
 import OrderDetails from '../modal/modal-order-details/modal-order-details';
-import { baseUrl } from '../../constants/constants';
 import Modal from "../modal/modal";
-import { BurgerConstructorContext } from '../../context/context';
-import { checkResponse } from '../../utils/utils';
+import { useSelector, useDispatch } from 'react-redux';
+import {getOrder} from '../../services/actions/order';
+import { useDrop } from "react-dnd";
+import {
+  ADD_FILLING_T0_CONSTRUCTOR,
+  ADD_BUN_T0_CONSTRUCTOR,
+  DEL_FILLING_T0_CONSTRUCTOR,
+  ADD_IN_T0_CONSTRUCTOR
+} from '../../services/actions/ingredients-in-constructor';
 
 
 const BurgerConstructor = () => {
-  const [openModal, setOpenModal] = React.useState(false);
-  const data = React.useContext(BurgerConstructorContext);
-
-  const bunItem = data.find(item => item.type === 'bun');
-  const filling = React.useMemo(() => data.filter(item => item.type != 'bun'), data)  
-
-  const [orderPrices, countOrderPrice] = React.useReducer(GetOrderList, 0)
-  const [errorLoad, setErrorLoad] = React.useState(false);
-  const [okLoad, setOKLoad] = React.useState(false);
-  const [orderData, setOrderData] = React.useState(false);
-
+  const [openModal, setOpenModal] = useState(false);
+  const bun = useSelector(state => state.ingredientsInConstructor.bunType);
+  const fillings = useSelector(state => state.ingredientsInConstructor.filling);
+  const orderNumber = useSelector(state => state.orderDetalis.order.order);
+  let elemIn = {};
   
+  const priceFillings = useMemo(() => {return fillings.reduce(function(sum, current) {   
+    return sum + current.price;
+  }, 0)}, [fillings])
+
+  const dispatch = useDispatch();
+
 
   const requestNumberOrder = (listId) => {
-    fetch(baseUrl + '/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        'ingredients': listId
-      })
-
-    })
-      .then(checkResponse)
-      .then(data => { setOKLoad(true); setOrderData(data) })
-      .catch((err) => { setErrorLoad(true) })
+    dispatch(getOrder(listId));
   }
 
 
-  function GetOrderList(state, stat) {
-    const order = {
-      listId: [],
-      price: stat.bunItem.price * 2
+  //===== функция добавления игредиента в конструкор =========
+  function addToConstructor(item) {
+    const idNum = new Date().valueOf();
+    let cloneItem = Object.assign({}, item);
+    cloneItem.idInBurger = idNum;
+    if (item.type === 'bun') {
+      return dispatch({type: ADD_BUN_T0_CONSTRUCTOR, payload: cloneItem});
     }
-    order.listId = stat.filling.map(function (elem) { order.price = order.price + elem.price; return elem._id });
-    order.listId.push(stat.bunItem._id, stat.bunItem._id);
-    return order
+    dispatch({type: ADD_FILLING_T0_CONSTRUCTOR, payload: cloneItem});
+  }
+
+  // получаем перетаскиваемый элемент
+  function getElemIn(e, item){
+    elemIn = item     
+  }
+
+  // ==== функция перетаскивание елементов внутри списка начинок
+  function sortFilling(e, elemOut){
+    e.preventDefault(); 
+    // если оба одинаковы, то ничего не делаем, выходим
+    if (elemOut._id === elemIn._id) {return}    
+
+    // находим индексы задейственных объектов
+    const indexOut = fillings.indexOf(elemOut);
+    
+
+    // меняем местами    
+    if (elemIn._id )  {
+      dispatch({type: DEL_FILLING_T0_CONSTRUCTOR, payload: elemIn});
+      dispatch({type: ADD_IN_T0_CONSTRUCTOR, payload: {indexOut, elemIn}});
+    }
+
+    // обнуляем перетаскиваемый эелемент
+    elemIn = {}
   }
 
 
-  React.useEffect(() => {
-    countOrderPrice({ bunItem, filling })
-  }, [data])
-
+  // удаление ингридиента по корзине
+  const delIngredient = (item) => {    
+    dispatch({type: DEL_FILLING_T0_CONSTRUCTOR, payload: item});
+  }
   
+  const [, dropTarget] = useDrop({
+    accept: "indredietItem",
+    drop(item) {
+      addToConstructor(item);   
+      
+    },
+  });
+
+  const [, dropX] = useDrop({
+    accept: "indred",
+  });
+
+
+  function GetOrderList() {
+    const listId = fillings.map(elem => elem._id);
+    listId.push(bun._id, bun._id,);
+    return listId
+  }
+
+
+    function totalPrice () {
+      const priceBun = bun.price ? bun.price * 2 : 0;    
+      return (priceBun + priceFillings);
+    }
+
 
   return (
-    <section className='mt-25 pr-0'>
+    <section className='mt-25 pr-0' ref={dropTarget}> 
       <div className={`${burgerConstructor.content}`}>
-        <div className='mr-5 ml-7'>
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`${bunItem.name} (верх)`}
-            price={bunItem.price}
-            thumbnail={bunItem.image}
-          />
-        </div>
+        {bun.type &&      
+          (<div className='mr-5 ml-7'>
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={`${bun.name} (верх)`}
+              price={bun.price}
+              thumbnail={bun.image}
+            />
+          </div>)
+        }
+        <ul className={`${burgerConstructor.list} custom-scroll`}  ref={dropX} >
+          {fillings.map((item) => (
+            item.type != 'bun'  &&
+            <BurgerFiling key={item.idInBurger} 
+              item={item} 
+              sortFilling={sortFilling} 
+              getElemIn={getElemIn}
+              delIngredient={delIngredient}
+            />
 
-        <ul className={`${burgerConstructor.list} custom-scroll`}>
-          {data.map(item => (
-            item.type != 'bun' &&
-            <BurgerFiling key={item._id} elem={item} />
           ))}
         </ul>
-
-        <div className='mr-5 ml-7'>
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`${bunItem.name} (низ)`}
-            price={bunItem.price}
-            thumbnail={bunItem.image}
-          />
-        </div>
+        { bun.type &&  
+          (<div className='mr-5 ml-7'>
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={`${bun.name} (низ)`}
+              price={bun.price}
+              thumbnail={bun.image}
+            />
+          </div>)
+        }
       </div>
 
       <div className={`${burgerConstructor.totalOrder} mt-10 mr-3`}>
         <div className={`${burgerConstructor.totalPrice} mr-10`}>
-          <p className="text text_type_digits-medium mr-2"> {orderPrices.price}</p>
+          <p className="text text_type_digits-medium mr-2"> {totalPrice()}</p>
           <CurrencyIcon type='primary' />
         </div>
-        <Button type="primary" size="large" onClick={function () { setOpenModal(true); requestNumberOrder(orderPrices.listId) }}>Оформить заказ</Button>
+        <Button 
+          disabled = {!totalPrice()}
+          type="primary" 
+          size="large" 
+          onClick={function () {setOpenModal(true); requestNumberOrder(GetOrderList())}}>
+            Оформить заказ
+        </Button>
       </div>
 
-      {errorLoad && <p> --- Ошибка загрузки данных с сервера ---</p>}
-      {orderData && (
+      
+      {orderNumber && (
         <>
           <Modal open={openModal} onClose={() => setOpenModal(false)}>
-            <OrderDetails number={orderData.order.number} />
+            <OrderDetails number={orderNumber.number} />
           </Modal>
         </>
-      )}
+      )}  
+     
 
     </section>
   )

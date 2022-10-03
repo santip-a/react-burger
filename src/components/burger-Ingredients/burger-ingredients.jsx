@@ -1,22 +1,30 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import burgerIngredients from './burger-ingredients.module.css';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngridientDetails from '../modal/modal-ingredient-details/modal-ingredient-details';
 import ImgredientList from './imgredient-list/imgredient-list';
 import { nameTypeIngredients } from '../../constants/constants';
 import Modal from '../modal/modal';
-import { BurgerConstructorContext } from '../../context/context';
-
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  DEL_INGREDIENT_DETALIS
+} from '../../services/actions/ingredient-details';
 
 const BurgerIngredients = () => {
   const [current, setCurrent] = React.useState('bun');
   const [openModal, setOpenModal] = React.useState(false);
-  const data = React.useContext(BurgerConstructorContext);
-  const [elemIngridient, setElemIngridient] = React.useState(data[0]);
+  const data = useSelector(state => state.ingredients.data)
+  const dispatch = useDispatch();
+  const elemIngridient = useSelector(state => state.ingredientDetalis.elem)
 
   const bunRef = React.useRef();
   const sauceRef = React.useRef();
   const mainRef = React.useRef();
+
+  const ulID = document.getElementById('ul')
+  const bunID = document.getElementById('bun')
+  const sauceID = document.getElementById('sauce')
+  const mainID = document.getElementById('main')
 
   const scrollIngedients = (e) => {
     setCurrent(e);
@@ -38,10 +46,25 @@ const BurgerIngredients = () => {
   }
 
 
+// ============ функция переключения табов при скролле
+  const scrollFun = () => {
+    const bunY = Math.abs(ulID.getBoundingClientRect().y - bunID.getBoundingClientRect().y);
+    const sauceY = Math.abs(ulID.getBoundingClientRect().y - sauceID.getBoundingClientRect().y);
+    const mainY = Math.abs(ulID.getBoundingClientRect().y - mainID.getBoundingClientRect().y);
+
+    const minY = Math.min(bunY,sauceY,mainY)
+    if (minY === bunY) {setCurrent('bun')}
+    else if (minY === sauceY) {setCurrent('sauce')}
+    else if (minY === mainY) {setCurrent('main')}
+  }
+    
+
+  
+
   return (
     <section className={`${burgerIngredients.section} pt-10 `}>
       <h1 className="text text_type_main-large ">Соберите бургер</h1>
-      <div className={`${burgerIngredients.artile} mt-5 mb-10 `}>
+      <div className={`${burgerIngredients.artile} mt-5 mb-10 `} >
         <Tab value="bun" active={current === 'bun'} onClick={scrollIngedients}>
           Булки
         </Tab>
@@ -52,13 +75,13 @@ const BurgerIngredients = () => {
           Начинки
         </Tab>
       </div>
-      <div className={`${burgerIngredients.list} custom-scroll`}>
+      <div className={`${burgerIngredients.list} custom-scroll`} id='ul' onScroll={scrollFun}>
         {
           nameTypeIngredients.map(item => (
-            <ImgredientList key={item.nameEn}
+            <ImgredientList 
+              key={item.nameEn}
               elem={item}
               onClose={setOpenModal}
-              setElem={setElemIngridient} 
               bunRef = {bunRef}
               sauceRef = {sauceRef}
               mainRef = {mainRef}
@@ -66,8 +89,8 @@ const BurgerIngredients = () => {
           )}
       </div>
 
-      <Modal open={openModal} onClose={() => setOpenModal(false)}>
-        <IngridientDetails elem={elemIngridient} />
+      <Modal open={openModal} onClose={() => {setOpenModal(false); dispatch({type: DEL_INGREDIENT_DETALIS})}}>
+        <IngridientDetails />
       </Modal>
 
     </section>

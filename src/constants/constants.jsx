@@ -25,4 +25,3 @@ export const ingredientForPropTypes = {
   "__v": PropTypes.number.isRequired,
 }
 
-
