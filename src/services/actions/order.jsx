@@ -5,7 +5,6 @@ export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS';
 export const CREATE_ORDER_FAILED = 'CREATE_ORDER_FAILED';
 export const CREATE_ORDER_CLEAR = 'CREATE_ORDER_CLEAR';
 
-
 export const getOrder = (listId) => {
   return function(dispatch) {
     dispatch({type: CREATE_ORDER_CLEAR})
