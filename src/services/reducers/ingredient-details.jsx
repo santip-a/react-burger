@@ -1,21 +1,21 @@
 import {
-  ADD_INGREDIENT_DETALIS,
-  DEL_INGREDIENT_DETALIS
+  ADD_INGREDIENT_DETAILS,
+  DEL_INGREDIENT_DETAILS
 } from '../actions/ingredient-details'
 
-const inicialDetalis = {
+const initialDetails = {
   elem: {}
 }
 
-export const ingredientDetalis = (state = inicialDetalis, action ) => {
+export const ingredientDetalis = (state = initialDetails, action ) => {
   switch (action.type) {
-    case ADD_INGREDIENT_DETALIS: {
+    case ADD_INGREDIENT_DETAILS: {
       return {
         ...state,
         elem: action.payload
       };
     }
-    case DEL_INGREDIENT_DETALIS: {
+    case DEL_INGREDIENT_DETAILS: {
       return {
         ...state,
         elem: {}

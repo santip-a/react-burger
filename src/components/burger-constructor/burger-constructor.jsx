@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import burgerConstructor from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerFiling from './burger-filling/burger-filling';
@@ -7,16 +7,18 @@ import Modal from "../modal/modal";
 import { useSelector, useDispatch } from 'react-redux';
 import {getOrder} from '../../services/actions/order';
 import { useDrop } from "react-dnd";
+import {checkIngredientType, sortInToConstructor} from '../../services/actions/ingredients-in-constructor'
 import {
-  ADD_FILLING_T0_CONSTRUCTOR,
-  ADD_BUN_T0_CONSTRUCTOR,
   DEL_FILLING_T0_CONSTRUCTOR,
-  ADD_IN_T0_CONSTRUCTOR
+  SORT_IN_TO_CONSTRUCTOR
 } from '../../services/actions/ingredients-in-constructor';
+import {
+  DEL_INGREDIENT_DETAILS
+} from '../../services/actions/ingredient-details';
 
 
 const BurgerConstructor = () => {
-  const [openModal, setOpenModal] = useState(false);
+  const [modalOpen, setModalOpen] = React.useState(false);
   const bun = useSelector(state => state.ingredientsInConstructor.bunType);
   const fillings = useSelector(state => state.ingredientsInConstructor.filling);
   const orderNumber = useSelector(state => state.orderDetalis.order.order);
@@ -25,30 +27,39 @@ const BurgerConstructor = () => {
   const priceFillings = useMemo(() => {return fillings.reduce(function(sum, current) {   
     return sum + current.price;
   }, 0)}, [fillings])
+  
 
+  const priceBun = useMemo(() => {
+    return  bun.price ? bun.price * 2 : 0;     
+  }, [bun])
+
+
+  const totalPrice = () => {
+    if (priceBun > 0 && priceFillings > 0) {
+      return priceBun + priceFillings;
+    }    
+  }
+ 
   const dispatch = useDispatch();
 
 
   const requestNumberOrder = (listId) => {
+    setModalOpen(true);
     dispatch(getOrder(listId));
   }
 
 
   //===== функция добавления игредиента в конструкор =========
   function addToConstructor(item) {
-    const idNum = new Date().valueOf();
-    let cloneItem = Object.assign({}, item);
-    cloneItem.idInBurger = idNum;
-    if (item.type === 'bun') {
-      return dispatch({type: ADD_BUN_T0_CONSTRUCTOR, payload: cloneItem});
-    }
-    dispatch({type: ADD_FILLING_T0_CONSTRUCTOR, payload: cloneItem});
+    dispatch(checkIngredientType(item));
   }
+
 
   // получаем перетаскиваемый элемент
   function getElemIn(e, item){
     elemIn = item     
   }
+
 
   // ==== функция перетаскивание елементов внутри списка начинок
   function sortFilling(e, elemOut){
@@ -57,13 +68,14 @@ const BurgerConstructor = () => {
     if (elemOut._id === elemIn._id) {return}    
 
     // находим индексы задейственных объектов
-    const indexOut = fillings.indexOf(elemOut);
-    
+    const indexOut = fillings.indexOf(elemOut);    
 
     // меняем местами    
     if (elemIn._id )  {
-      dispatch({type: DEL_FILLING_T0_CONSTRUCTOR, payload: elemIn});
-      dispatch({type: ADD_IN_T0_CONSTRUCTOR, payload: {indexOut, elemIn}});
+      dispatch({
+        type: SORT_IN_TO_CONSTRUCTOR, 
+        payload: sortInToConstructor(indexOut, elemIn, fillings)
+      });
     }
 
     // обнуляем перетаскиваемый эелемент
@@ -77,10 +89,9 @@ const BurgerConstructor = () => {
   }
   
   const [, dropTarget] = useDrop({
-    accept: "indredietItem",
+    accept: "ingdredietItem",
     drop(item) {
-      addToConstructor(item);   
-      
+      addToConstructor(item);         
     },
   });
 
@@ -89,17 +100,19 @@ const BurgerConstructor = () => {
   });
 
 
-  function GetOrderList() {
+  function getOrderList() {
     const listId = fillings.map(elem => elem._id);
-    listId.push(bun._id, bun._id,);
+    listId.unshift(bun._id)
+    listId.push(bun._id);
     return listId
   }
 
 
-    function totalPrice () {
-      const priceBun = bun.price ? bun.price * 2 : 0;    
-      return (priceBun + priceFillings);
-    }
+  const openModal = () => {
+    setModalOpen(false); 
+    dispatch({type: DEL_INGREDIENT_DETAILS});
+  }
+
 
 
   return (
@@ -117,16 +130,17 @@ const BurgerConstructor = () => {
           </div>)
         }
         <ul className={`${burgerConstructor.list} custom-scroll`}  ref={dropX} >
+
           {fillings.map((item) => (
             item.type != 'bun'  &&
-            <BurgerFiling key={item.idInBurger} 
+            (<BurgerFiling key={item.idInBurger} 
               item={item} 
               sortFilling={sortFilling} 
               getElemIn={getElemIn}
               delIngredient={delIngredient}
-            />
+            />)
+          ))}  
 
-          ))}
         </ul>
         { bun.type &&  
           (<div className='mr-5 ml-7'>
@@ -150,25 +164,23 @@ const BurgerConstructor = () => {
           disabled = {!totalPrice()}
           type="primary" 
           size="large" 
-          onClick={function () {setOpenModal(true); requestNumberOrder(GetOrderList())}}>
+          onClick={() => requestNumberOrder(getOrderList())}>
             Оформить заказ
         </Button>
       </div>
 
       
-      {orderNumber && (
-        <>
-          <Modal open={openModal} onClose={() => setOpenModal(false)}>
-            <OrderDetails number={orderNumber.number} />
-          </Modal>
-        </>
+      {orderNumber && (      
+        modalOpen && 
+        <Modal onClose={openModal}>
+          <OrderDetails number={orderNumber.number} />
+        </Modal>    
       )}  
      
 
     </section>
   )
 }
-
 
 
 export default BurgerConstructor;

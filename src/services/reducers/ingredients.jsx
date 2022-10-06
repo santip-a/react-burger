@@ -4,19 +4,19 @@ import {
   GET_INGREDIENTS_DATA_SUCCESS
 } from '../actions/ingredients'
 
-const inicialIngredients = {
+const initialIngredients = {
   data: [],
   isLoading: false,
-  errorLoadinf: false
+  errorLoading: false
 }
 
-export const ingredients = (state = inicialIngredients, action) => {
+export const ingredients = (state = initialIngredients, action) => {
   switch (action.type) {
     case GET_INGREDIENTS_DATA_REQUEST: {
       return {        
         ...state,        
         isLoading: true,
-        errorLoadinf: false
+        errorLoading: false
       };
     }
 
@@ -32,7 +32,7 @@ export const ingredients = (state = inicialIngredients, action) => {
       return {
         ...state,
         isLoading: false,
-        errorLoadinf: true
+        errorLoading: true
       };
     }
 

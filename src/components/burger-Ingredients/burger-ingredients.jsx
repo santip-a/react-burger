@@ -1,30 +1,29 @@
 import React from 'react';
 import burgerIngredients from './burger-ingredients.module.css';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import IngridientDetails from '../modal/modal-ingredient-details/modal-ingredient-details';
-import ImgredientList from './imgredient-list/imgredient-list';
+import IngredientDetails from '../modal/modal-ingredient-details/modal-ingredient-details';
+import IngredientList from './ingredient-list/ingredient-list';
 import { nameTypeIngredients } from '../../constants/constants';
 import Modal from '../modal/modal';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  DEL_INGREDIENT_DETALIS
+  DEL_INGREDIENT_DETAILS
 } from '../../services/actions/ingredient-details';
 
 const BurgerIngredients = () => {
   const [current, setCurrent] = React.useState('bun');
-  const [openModal, setOpenModal] = React.useState(false);
+  const [modalOpen, setModalOpen] = React.useState(false);
   const data = useSelector(state => state.ingredients.data)
   const dispatch = useDispatch();
-  const elemIngridient = useSelector(state => state.ingredientDetalis.elem)
 
   const bunRef = React.useRef();
   const sauceRef = React.useRef();
   const mainRef = React.useRef();
 
-  const ulID = document.getElementById('ul')
-  const bunID = document.getElementById('bun')
-  const sauceID = document.getElementById('sauce')
-  const mainID = document.getElementById('main')
+  const ulID = document.getElementById('ul');
+  const bunID = bunRef.current;
+  const sauceID = sauceRef.current;
+  const mainID = mainRef.current;
 
   const scrollIngedients = (e) => {
     setCurrent(e);
@@ -59,6 +58,10 @@ const BurgerIngredients = () => {
   }
     
 
+  const openModal = () => {
+    setModalOpen(false); 
+    dispatch({type: DEL_INGREDIENT_DETAILS})
+  }
   
 
   return (
@@ -78,10 +81,10 @@ const BurgerIngredients = () => {
       <div className={`${burgerIngredients.list} custom-scroll`} id='ul' onScroll={scrollFun}>
         {
           nameTypeIngredients.map(item => (
-            <ImgredientList 
+            <IngredientList 
               key={item.nameEn}
               elem={item}
-              onClose={setOpenModal}
+              onClose={setModalOpen}
               bunRef = {bunRef}
               sauceRef = {sauceRef}
               mainRef = {mainRef}
@@ -89,9 +92,9 @@ const BurgerIngredients = () => {
           )}
       </div>
 
-      <Modal open={openModal} onClose={() => {setOpenModal(false); dispatch({type: DEL_INGREDIENT_DETALIS})}}>
-        <IngridientDetails />
-      </Modal>
+    {modalOpen && <Modal onClose={openModal}>
+      <IngredientDetails />
+    </Modal>}
 
     </section>
   )

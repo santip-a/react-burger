@@ -1,9 +1,9 @@
-import imgredientList from './imgredient-list.module.css';
-import ImgredientItem from '../imgredient-item/imgredient-item';
+import ingredientList from './ingredient-list.module.css';
+import IngredientItem from '../ingredient-item/ingredient-item';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
  
-const ImgredientList = ({elem, onClose, bunRef, sauceRef, mainRef}) => {
+const IngredientList = ({elem, onClose, bunRef, sauceRef, mainRef}) => {
   let refUl;
   if (elem.nameEn === 'bun') {refUl = bunRef}
   if (elem.nameEn === 'sauce') {refUl = sauceRef}
@@ -18,18 +18,18 @@ const ImgredientList = ({elem, onClose, bunRef, sauceRef, mainRef}) => {
   }
 
   return (
-    <ul className={` ${imgredientList.lists} mb-15`} ref={refUl} >
+    <ul className={` ${ingredientList.lists} mb-15`} ref={refUl} >
       <p id={elem.nameEn}  className='text text_type_main-medium'>{elem.nameRu}</p>
-      <div className={`${imgredientList.list} ml-4`}>
+      <div className={`${ingredientList.list} ml-4`}>
         {        
-          sort(elem.nameEn).map(item => (<ImgredientItem key={item._id} item={item} onClose={onClose}/>))          
+          sort(elem.nameEn).map(item => (<IngredientItem key={item._id} item={item} onClose={onClose}/>))          
         }
       </div>
     </ul>
   )
 }
 
-ImgredientList.propTypes = {
+IngredientList.propTypes = {
   elem:  PropTypes.shape({
       nameEn: PropTypes.string.isRequired, 
       nameRu: PropTypes.string.isRequired
@@ -37,5 +37,5 @@ ImgredientList.propTypes = {
   onClose: PropTypes.func.isRequired
 }
 
-export default ImgredientList;
+export default IngredientList;
 

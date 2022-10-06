@@ -6,7 +6,7 @@ import modalStyles from './modal.module.css';
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 
-const Modal = ({open, onClose, children }) => {
+const Modal = ({onClose, children }) => {
 
   React.useEffect(() => {
     const pressEsc = (e) => {
@@ -19,7 +19,6 @@ const Modal = ({open, onClose, children }) => {
 
   }, [])
 
-  if (!open) return null;
 
   return ReactDOM.createPortal (
     ( <>
@@ -36,7 +35,6 @@ const Modal = ({open, onClose, children }) => {
 
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
-  open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired
 }
 

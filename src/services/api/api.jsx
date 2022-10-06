@@ -8,7 +8,6 @@ function checkResponse(res) {
 }
 
 
-
 export const getDataApi = () => {
   return fetch(baseUrl + '/ingredients')
     .then(checkResponse)
@@ -22,7 +21,7 @@ export const getOrderApi = (listId) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      'ingredients': listId
+      ingredients: listId
     })
   })
     .then(checkResponse)

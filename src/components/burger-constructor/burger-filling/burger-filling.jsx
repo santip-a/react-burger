@@ -1,23 +1,14 @@
 import burgerFiling from './burger-filling.module.css'
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from 'prop-types';
-import {ingredientForPropTypes} from '../../../constants/constants';
+import {ingredientPropTypes} from '../../../constants/constants';
 import { useDrag } from "react-dnd";
-import {useState} from 'react';
 
 
-const BurgerFiling = (props) => {
-  const {item, sortFilling, getElemIn, delIngredient} = props;
-
-
+const BurgerFiling = ({item, sortFilling, getElemIn, delIngredient}) => {
   const [, dragRef] = useDrag({
     type: "indred",
     item: item          
   });
-
-
-
- 
 
   return (
     <li className={`${burgerFiling.item}  mr-2 `}
@@ -37,7 +28,7 @@ const BurgerFiling = (props) => {
 }
 
 BurgerFiling.propTypes = {
-  item: PropTypes.shape(ingredientForPropTypes).isRequired
+  item: ingredientPropTypes  
 };
 
 export default BurgerFiling;

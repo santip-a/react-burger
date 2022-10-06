@@ -1,7 +1,8 @@
 import {
   CREATE_ORDER_REQUEST,
   CREATE_ORDER_SUCCESS,
-  CREATE_ORDER_FAILED
+  CREATE_ORDER_FAILED,
+  CREATE_ORDER_CLEAR
 } from '../actions/order'
 
 const inicialOrder = {
@@ -33,6 +34,13 @@ export const orderDetalis = (state = inicialOrder, action) => {
         ...state,
         isLoading: false,
         errorLoadinf: true
+      };
+    }
+
+    case CREATE_ORDER_CLEAR: {
+      return {
+        ...state,
+        order: {}
       };
     }
 

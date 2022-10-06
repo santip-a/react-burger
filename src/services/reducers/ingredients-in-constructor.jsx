@@ -1,47 +1,48 @@
 import {
-  ADD_FILLING_T0_CONSTRUCTOR,
-  ADD_BUN_T0_CONSTRUCTOR,
+  ADD_FILLING_TO_CONSTRUCTOR,
+  ADD_BUN_TO_CONSTRUCTOR,
   DEL_FILLING_T0_CONSTRUCTOR,
-  ADD_IN_T0_CONSTRUCTOR
+  SORT_IN_TO_CONSTRUCTOR
 } from '../actions/ingredients-in-constructor';
 
-const inicialConstructor = {
+
+
+const initialConstructor = {
   filling: [],
   bunType: {},
 }
 
-export const ingredientsInConstructor = (state = inicialConstructor, action) => {
+  
+export const ingredientsInConstructor = (state = initialConstructor, action) => {
   switch (action.type) {
-    case ADD_FILLING_T0_CONSTRUCTOR: {
+    case ADD_FILLING_TO_CONSTRUCTOR: {
       return {
         ...state,
         filling: [...state.filling, action.payload]       
       }
     }
-    case ADD_BUN_T0_CONSTRUCTOR: {
+
+    case ADD_BUN_TO_CONSTRUCTOR: {
       return {
         ...state,
         bunType: action.payload
       }
     }
+
     case DEL_FILLING_T0_CONSTRUCTOR: {
       return {
         ...state,
-        filling: [...state.filling.filter(el => el.idInBurger !== action.payload.idInBurger)]
+        filling: state.filling.filter(el => el.idInBurger !== action.payload.idInBurger)
       }
     }
-    case ADD_IN_T0_CONSTRUCTOR: {
+
+    case SORT_IN_TO_CONSTRUCTOR: {
       return {
         ...state,
-        filling: [...state.filling.filter((item,index) => 
-          index < action.payload.indexOut), 
-          action.payload.elemIn,
-          ...state.filling.filter((item,index) => 
-          index > action.payload.indexOut-1)
-        ]         
+        filling: [...action.payload]    
       }
     }
-    
+  
     default: {
       return state;
     }

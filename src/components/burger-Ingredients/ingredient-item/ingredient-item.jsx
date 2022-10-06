@@ -1,12 +1,12 @@
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import imgredientItem from './imgredient-item.module.css';
+import ingredientItem from './ingredient-item.module.css';
 import PropTypes from 'prop-types';
-import {ingredientForPropTypes} from '../../../constants/constants';
+import {ingredientPropTypes} from '../../../constants/constants';
 import { useDrag } from "react-dnd";
 import { useSelector,useDispatch } from 'react-redux';
-import {ADD_INGREDIENT_DETALIS} from '../../../services/actions/ingredient-details'
+import {ADD_INGREDIENT_DETAILS} from '../../../services/actions/ingredient-details'
 
-const ImgredientItem = (props) => {
+const IngredientItem = (props) => {
 
   const {item, onClose} = props;
   const dispatch = useDispatch();    
@@ -14,34 +14,33 @@ const ImgredientItem = (props) => {
   const fillingInConstructor = useSelector(state => state.ingredientsInConstructor.filling)
 
   // ------- подсчет счетчика ингредиентов----------
-  let nunber = 0
+  let number = 0
   if (bunInConstructor._id === item._id) {
-    nunber = 2
+    number = 2
   }
-  fillingInConstructor.forEach(elem => {
+  else fillingInConstructor.forEach(elem => {
     if (elem._id === item._id) {
-      nunber = nunber + 1
+      number = number + 1
     }
   }) 
-//=====================================================
 
   const setElem = () => {
-    dispatch({type: ADD_INGREDIENT_DETALIS, payload: item});
+    dispatch({type: ADD_INGREDIENT_DETAILS, payload: item});
   }
 
 
   const [, dragRef] = useDrag({
-    type: "indredietItem",
+    type: "ingdredietItem",
     item: item           
   });
 
  
 
   return (
-    <li className={`${imgredientItem.item} mt-6 mb-1`} onClick={()=> {onClose(true); setElem(item)}} ref={dragRef} >
-      {nunber > 0 && <Counter count={nunber} size='default' />}
+    <li className={`${ingredientItem.item} mt-6 mb-1`} onClick={()=> {onClose(true); setElem(item)}} ref={dragRef} >
+      {number > 0 && <Counter count={number} size='default' />}
       <img src={item.image} alt={item.name} />
-      <div className={`${imgredientItem.price} mt-2 mb-2`} >
+      <div className={`${ingredientItem.price} mt-2 mb-2`} >
         <span className='pr-2 text text_type_digits-default'>{item.price}</span>      
         <CurrencyIcon type='primary' className='pl-5'/>
       </div>
@@ -50,10 +49,10 @@ const ImgredientItem = (props) => {
   )  
 }
 
-ImgredientItem.propTypes = {
-  item: PropTypes.shape(ingredientForPropTypes).isRequired,
+IngredientItem.propTypes = {
+  item: ingredientPropTypes,
   onClose: PropTypes.func.isRequired
 };
 
 
-export default ImgredientItem;
+export default IngredientItem;
