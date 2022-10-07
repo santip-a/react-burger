@@ -34,12 +34,18 @@ const BurgerConstructor = () => {
   }, [bun])
 
 
+  // const totalPrice = () => {
+  //   if (priceBun > 0 && priceFillings > 0) {
+  //     return priceBun + priceFillings;
+  //   }    
+  // }
   const totalPrice = () => {
-    if (priceBun > 0 && priceFillings > 0) {
+    if (priceBun > 0) {
       return priceBun + priceFillings;
     }    
   }
- 
+
+
   const dispatch = useDispatch();
 
 
@@ -157,7 +163,8 @@ const BurgerConstructor = () => {
 
       <div className={`${burgerConstructor.totalOrder} mt-10 mr-3`}>
         <div className={`${burgerConstructor.totalPrice} mr-10`}>
-          <p className="text text_type_digits-medium mr-2"> {totalPrice()}</p>
+          {/* <p className="text text_type_digits-medium mr-2"> {totalPrice()}</p> */}
+          <p className="text text_type_digits-medium mr-2"> { !totalPrice() ? 0 : totalPrice() }</p>
           <CurrencyIcon type='primary' />
         </div>
         <Button 
