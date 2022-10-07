@@ -34,11 +34,6 @@ const BurgerConstructor = () => {
   }, [bun])
 
 
-  // const totalPrice = () => {
-  //   if (priceBun > 0 && priceFillings > 0) {
-  //     return priceBun + priceFillings;
-  //   }    
-  // }
   const totalPrice = () => {
     if (priceBun > 0) {
       return priceBun + priceFillings;
