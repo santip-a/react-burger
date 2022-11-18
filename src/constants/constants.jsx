@@ -10,7 +10,7 @@ export const nameTypeIngredients = [
 export const baseUrl = 'https://norma.nomoreparties.space/api';
 
 
-export const ingredientForPropTypes = {
+export const ingredientPropTypes = PropTypes.shape({
   "_id": PropTypes.string.isRequired,
   "name": PropTypes.string.isRequired,
   "type": PropTypes.string.isRequired,
@@ -23,6 +23,6 @@ export const ingredientForPropTypes = {
   "image_mobile": PropTypes.string.isRequired,
   "image_large": PropTypes.string.isRequired,
   "__v": PropTypes.number.isRequired,
-}
+}).isRequired
 
 

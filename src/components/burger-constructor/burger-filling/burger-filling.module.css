@@ -2,5 +2,9 @@
   display: flex;
   align-items: center;
   column-gap: 5px ; 
-  padding: 0;
+}
+
+.border {
+  border-bottom: 2px solid red;
+  
 }
