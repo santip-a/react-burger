@@ -1,9 +1,9 @@
-import ingredientInfo from  './ingredient-Info.module.css';
-import {ingredientPropTypes} from '../../../../constants/constants';
+import ingredientInfo from './ingredient-Info.module.css';
+import { ingredientPropTypes } from '../../../../constants/constants';
 
-const IngridientInfo = ({info }) => {
+const IngridientInfo = ({ info }) => {
   return (
-    <ul className={`${ingredientInfo.list} text_type_main-default text_color_inactive` }>
+    <ul className={`${ingredientInfo.list} text_type_main-default text_color_inactive`}>
       <li className={ingredientInfo.item}>
         <p className='text mb-2'>Калории, ккал</p>
         <p className='text text_type_digits-default'>{info.calories}</p>
@@ -20,8 +20,8 @@ const IngridientInfo = ({info }) => {
         <p className='text mb-2'>Углеводы, г</p>
         <p className='text text_type_digits-default'>{info.carbohydrates}</p>
       </li>
-    </ul> 
-  ) 
+    </ul>
+  )
 }
 
 IngridientInfo.propTypes = {

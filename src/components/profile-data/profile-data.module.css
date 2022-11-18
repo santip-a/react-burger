@@ -1,0 +1,20 @@
+.inputs {
+  width: 480px;
+}
+
+.icon,.pen {
+  position: absolute;
+  right: 24px;
+  top: calc(50% - 12px);
+}
+
+.icon:hover {
+  cursor: pointer;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+

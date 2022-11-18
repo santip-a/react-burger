@@ -1,0 +1,21 @@
+.section {
+  margin: o auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  
+}
+
+.image {
+  width: 500px;
+  overflow: hidden;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.title button {
+  padding: 0;
+ }
+ 

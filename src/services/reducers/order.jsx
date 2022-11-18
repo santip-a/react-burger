@@ -15,7 +15,7 @@ export const orderDetalis = (state = inicialOrder, action) => {
   switch (action.type) {
     case CREATE_ORDER_REQUEST: {
       return {
-        ...state,        
+        ...state,
         isLoading: true,
         errorLoadinf: false
       };

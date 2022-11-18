@@ -5,20 +5,18 @@ import {
   SORT_IN_TO_CONSTRUCTOR
 } from '../actions/ingredients-in-constructor';
 
-
-
 const initialConstructor = {
   filling: [],
   bunType: {},
 }
 
-  
+
 export const ingredientsInConstructor = (state = initialConstructor, action) => {
   switch (action.type) {
     case ADD_FILLING_TO_CONSTRUCTOR: {
       return {
         ...state,
-        filling: [...state.filling, action.payload]       
+        filling: [...state.filling, action.payload]
       }
     }
 
@@ -39,10 +37,10 @@ export const ingredientsInConstructor = (state = initialConstructor, action) => 
     case SORT_IN_TO_CONSTRUCTOR: {
       return {
         ...state,
-        filling: [...action.payload]    
+        filling: [...action.payload]
       }
     }
-  
+
     default: {
       return state;
     }

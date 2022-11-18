@@ -2,13 +2,12 @@ import PropTypes from 'prop-types';
 
 
 export const nameTypeIngredients = [
-  {nameEn: 'bun', nameRu: 'Булки'}, 
-  {nameEn: 'sauce', nameRu: 'Соусы'}, 
-  {nameEn: 'main', nameRu: 'Начинки'}
+  { nameEn: 'bun', nameRu: 'Булки' },
+  { nameEn: 'sauce', nameRu: 'Соусы' },
+  { nameEn: 'main', nameRu: 'Начинки' }
 ];
 
 export const baseUrl = 'https://norma.nomoreparties.space/api';
-
 
 export const ingredientPropTypes = PropTypes.shape({
   "_id": PropTypes.string.isRequired,

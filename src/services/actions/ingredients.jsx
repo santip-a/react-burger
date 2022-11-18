@@ -1,30 +1,30 @@
-import {getDataApi} from '../api/api'
+import { getDataApi } from '../api/api'
 
 export const GET_INGREDIENTS_DATA_REQUEST = 'GET_INGREDIENTS_DATA';
 export const GET_INGREDIENTS_DATA_FAILED = 'GET_INGREDIENTS_DATA_FAILED';
 export const GET_INGREDIENTS_DATA_SUCCESS = 'GET_INGREDIENTS_DATA_SUCCESS';
 
 export function getData() {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({
       type: GET_INGREDIENTS_DATA_REQUEST
     })
     getDataApi()
-    .then(
-      (data) => {
-        if (data) {
-          dispatch({
-            type: GET_INGREDIENTS_DATA_SUCCESS,
-            payload: data.data
-          })
+      .then(
+        (data) => {
+          if (data) {
+            dispatch({
+              type: GET_INGREDIENTS_DATA_SUCCESS,
+              payload: data.data
+            })
+          }
         }
-      }
-    )
-    .catch( err => {
-      dispatch({
+      )
+      .catch(err => {
+        dispatch({
           type: GET_INGREDIENTS_DATA_FAILED
-      });
-      alert(`Ошибка загрузки данных с сервера ${err.status}`);
-    })
+        });
+        alert(`Ошибка загрузки данных с сервера ${err.status}`);
+      })
   }
 } 
