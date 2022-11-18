@@ -34,7 +34,7 @@ const Profile = () => {
         <NavLink to='/profile/user' className={profile.link} activeClassName={profile.activeLink}>
           <p className="text text_type_main-medium text_color_inactive pt-5 pb-5 pl-5">Профиль</p>
         </NavLink>
-        <NavLink to='/profile/ordersHistory' className={profile.link} activeClassName={profile.activeLink}>
+        <NavLink to='/profile/orders' className={profile.link} activeClassName={profile.activeLink}>
           <p className="text text_type_main-medium text_color_inactive pt-3 pb-5 pl-5">История заказов</p>
         </NavLink>
         <p className={`${profile.button} text text_type_main-medium text_color_inactive pt-4 pb-5 pl-5`} onClick={profileExit}>Выход</p>
@@ -43,7 +43,7 @@ const Profile = () => {
       <Switch>
         <Route path='/profile' exact={true} render={() => <Redirect to="/profile/user" />} />
         <Route path='/profile/user' exact={true} component={ProfileData} />
-        <Route path='/profile/ordersHistory' exact={true} ><h1>orders history</h1></Route>
+        <Route path='/profile/orders' exact={true} ><h1>orders history</h1></Route>
       </Switch>
     </div>
   );
