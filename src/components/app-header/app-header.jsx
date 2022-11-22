@@ -21,9 +21,9 @@ const AppHeader = () => {
             </NavLink>
           </li>
           <li className={`${header.item} ml-10 pl-15 pr-6 pt-1 pb-1`}>
-            <a href="#" className={header.link}>
+            <NavLink to='/' className={header.link}>
               <Logo />
-            </a>
+            </NavLink>
           </li>
           <li className={`${header.item_last} pr-5`} >
             <NavLink to='/profile' className={header.link} activeClassName={header.activeLink}>

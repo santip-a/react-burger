@@ -7,12 +7,14 @@ import Modal from "../modal/modal";
 import { useSelector, useDispatch } from 'react-redux';
 import { getOrder } from '../../services/actions/order';
 import { useDrop } from "react-dnd";
-import { checkIngredientType, sortInToConstructor } from '../../services/actions/ingredients-in-constructor'
+import { checkIngredientType, sortInToConstructor } from '../../services/actions/ingredients-in-constructor';
 import {
   DEL_FILLING_T0_CONSTRUCTOR,
-  SORT_IN_TO_CONSTRUCTOR
+  SORT_IN_TO_CONSTRUCTOR,
+  RESET_IN_TO_CONSTRUCTOR
 } from '../../services/actions/ingredients-in-constructor';
 import { useHistory } from 'react-router-dom';
+import { Loader } from '../loader/loader'
 
 
 const BurgerConstructor = () => {
@@ -23,7 +25,13 @@ const BurgerConstructor = () => {
   const userAuth = useSelector(state => state.authUser.userAuth);
   const dispatch = useDispatch();
   const history = useHistory();
+  const loadingOrder = useSelector(state => state.orderDetalis.isLoading);
   let elemIn = {};
+
+
+  // React.useEffect(() => {
+  //console.log(loadingOrder)
+  // }, [loadingOrder]);
 
   const priceFillings = useMemo(() => {
     return fillings.reduce(function (sum, current) {
@@ -106,6 +114,9 @@ const BurgerConstructor = () => {
   }
 
   const closeModal = () => {
+    dispatch({
+      type: RESET_IN_TO_CONSTRUCTOR
+    });
     setModalOpen(false);
   }
 
@@ -163,6 +174,9 @@ const BurgerConstructor = () => {
         </Button>
       </div>
 
+      {loadingOrder && (
+          <Loader />
+      )}
 
       {orderNumber && (
         modalOpen &&

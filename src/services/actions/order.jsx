@@ -1,4 +1,4 @@
-import { getOrderApi } from '../api/api'
+import { getOrderApi } from '../api/api';
 
 export const CREATE_ORDER_REQUEST = 'CREATE_ORDER_REQUEST';
 export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS';
@@ -19,6 +19,7 @@ export const getOrder = (listId) => {
               type: CREATE_ORDER_SUCCESS,
               payload: data
             })
+
           }
         }
       )

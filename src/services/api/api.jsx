@@ -1,5 +1,9 @@
 import { baseUrl } from '../../constants/constants';
 
+function request(url, options) {
+  return fetch(url, options).then(checkResponse)
+}
+
 function checkResponse(res) {
   if (res.ok) {
     return res.json();
@@ -8,12 +12,11 @@ function checkResponse(res) {
 }
 
 export const getDataApi = () => {
-  return fetch(baseUrl + '/ingredients')
-    .then(checkResponse)
+  return request(baseUrl + '/ingredients')
 }
 
 export const getOrderApi = (listId) => {
-  return fetch(baseUrl + '/orders', {
+  return request(baseUrl + '/orders', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -22,7 +25,6 @@ export const getOrderApi = (listId) => {
       ingredients: listId
     })
   })
-    .then(checkResponse)
 }
 
 export function getCookie(name) {
@@ -33,35 +35,23 @@ export function getCookie(name) {
 }
 
 const getApi = (data, path) => {
-  return fetch(baseUrl + path, {
+  return request(baseUrl + path, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data)
   })
-    .then(checkResponse)
-}
-
-export const getUserApi = () => {
-  return fetch(baseUrl + '/auth/user', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + getCookie('accessToken')
-    },
-  })
 }
 
 export const getAccessTokenApi = () => {
-  return fetch(baseUrl + '/auth/token', {
+  return request(baseUrl + '/auth/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ token: getCookie('token') })
   })
-    .then(checkResponse)
 }
 
 export const getRegistrationApi = (form) => {
@@ -77,9 +67,8 @@ export const resetPasswordApi = (data) => {
   return getApi(data, '/password-reset/reset')
 }
 
-
 export const getAuthApi = (data) => {
-  return fetch(baseUrl + '/auth/login', {
+  return request(baseUrl + '/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -87,15 +76,24 @@ export const getAuthApi = (data) => {
     },
     body: JSON.stringify(data)
   })
-    .then(checkResponse)
 }
 
 export const getLogoutApi = (data) => {
   return getApi(data, '/auth/logout')
 }
 
+export const getUserApi = () => {
+  return request(baseUrl + '/auth/user', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + getCookie('accessToken')
+    },
+  })
+}
+
 export const updateUserApi = (data) => {
-  return fetch(baseUrl + '/auth/user', {
+  return request(baseUrl + '/auth/user', {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',

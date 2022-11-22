@@ -2,26 +2,26 @@ import { Input, ShowIcon, HideIcon, EditIcon, Button } from "@ya.praktikum/react
 import profile from './profile-data.module.css';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserData } from '../../services/actions/auth-user'
+import { updateUserData } from '../../services/actions/auth-user';
+import { useForm } from '../../hooks/useForm';
 
 export const ProfileData = () => {
+  const { values, handleChange, setValues } = useForm({ name: '', email: '', password: '' });
   const [visiblePasswordIcon, setVisiblePasswordIcon] = React.useState(false);
   const [visiblePassword, setVisiblePassword] = React.useState('password');
   const [visibleButtonSave, setVisibleButtonSave] = React.useState(false);
   const inputRef = React.useRef(null);
   const userData = useSelector(state => state.authUser);
-  const [nameUser, setName] = React.useState('');
-  const [emailUser, setEmail] = React.useState('');
-  const [passwordUser, setPasswordUser] = React.useState('');
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     if (userData.userAuth) {
-      setName(userData.user.name);
-      setEmail(userData.user.email);
-      setPasswordUser(userData.user.password);
+      setValues({
+        name: userData.user.name,
+        email: userData.user.email,
+        password: userData.user.password
+      })
     }
-    setPasswordUser(userData.user.password);
   }, [userData]);
 
   const onIconClick = () => {
@@ -43,19 +43,20 @@ export const ProfileData = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     const form = {
-      name: nameUser,
-      email: emailUser
+      name: values.name,
+      email: values.email
     }
-    console.log(passwordUser)
     dispatch(updateUserData(form));
     setVisibleButtonSave(false);
   }
 
   const cancelFormSubmit = (e) => {
     e.preventDefault();
-    setName(userData.user.name);
-    setEmail(userData.user.email);
-    setPasswordUser(userData.user.password);
+    setValues({
+      name: userData.user.name,
+      email: userData.user.email,
+      password: userData.user.password
+    })
   }
 
   const check = (stateData, inputData) => {
@@ -69,8 +70,8 @@ export const ProfileData = () => {
           <Input
             type={'text'}
             placeholder={'Имя'}
-            onChange={e => { setName(e.target.value); check('name', e.target.value) }}
-            value={nameUser === undefined ? '' : nameUser}
+            onChange={e => { handleChange(e); check('name', e.target.value) }}
+            value={values.name}
             name={'name'}
             error={false}
             ref={inputRef}
@@ -86,8 +87,8 @@ export const ProfileData = () => {
           <Input
             type={'text'}
             placeholder={'E-mail'}
-            onChange={e => { setEmail(e.target.value); check('email', e.target.value) }}
-            value={emailUser === undefined ? '' : emailUser}
+            onChange={e => { handleChange(e); check('email', e.target.value) }}
+            value={values.email}
             name={'email'}
             error={false}
             ref={inputRef}
@@ -103,8 +104,8 @@ export const ProfileData = () => {
           <Input
             type={visiblePassword}
             placeholder={'Пароль'}
-            onChange={e => { setPasswordUser(e.target.value); check('email', e.target.password) }}
-            value={passwordUser === undefined ? '' : passwordUser}
+            onChange={e => { handleChange(e); check('email', e.target.password) }}
+            value={values.password}
             name={'password'}
             error={false}
             ref={inputRef}

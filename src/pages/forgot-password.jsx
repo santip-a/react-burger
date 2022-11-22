@@ -2,12 +2,12 @@ import React from 'react';
 import login from './forgot-password.module.css';
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
-import { forgotPassword } from '../services/actions/auth-user';
+import { forgotPassword, setForgotPasswor } from '../services/actions/auth-user';
 import { useSelector, useDispatch } from 'react-redux';
-import { RESET_FORGOT_PASSWORD } from '../services/actions/auth-user'
+import { useForm } from '../hooks/useForm';
 
 const ForgotPassword = () => {
-
+	const { values, handleChange } = useForm({ email: '' });
 	const [email, setEmail] = React.useState('');
 	const inputRef = React.useRef(null);
 	const history = useHistory();
@@ -30,11 +30,11 @@ const ForgotPassword = () => {
 
 	const getPasswordApi = (e) => {
 		e.preventDefault();
-		dispatch(forgotPassword({ "email": email }))
+		dispatch(forgotPassword(values))
 	}
 
 	if (forgotPasswordSuccess) {
-		dispatch({ type: RESET_FORGOT_PASSWORD })
+		dispatch(setForgotPasswor)
 		return (
 			<Redirect
 				to={{ pathname: '/reset-password', state: true }}
@@ -58,9 +58,9 @@ const ForgotPassword = () => {
 					<Input
 						type={'text'}
 						placeholder={'Укажите e-mail'}
-						onChange={e => setEmail(e.target.value)}
-						value={email}
-						name={'name'}
+						onChange={e => handleChange(e)}
+						value={values.email}
+						name={'email'}
 						error={false}
 						ref={inputRef}
 						onIconClick={onIconClick}

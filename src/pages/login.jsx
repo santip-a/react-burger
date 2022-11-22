@@ -3,12 +3,11 @@ import login from './login.module.css';
 import { Input, ShowIcon, Button, HideIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAuth } from '../services/actions/auth-user';
-import { SET_PASSWORD } from '../services/actions/auth-user'
+import { getAuth, setPassword } from '../services/actions/auth-user';
+import { useForm } from '../hooks/useForm'
 
 const Login = () => {
-	const [email, setEmail] = React.useState('');
-	const [password, setPassword] = React.useState('');
+	const { values, handleChange } = useForm({ email: '',  password: ''});
 	const [visiblePassword, setvisiblePassword] = React.useState('password');
 	const [visiblePasswordIcon, setvisiblePasswordIcon] = React.useState(false);
 	const inputRef = React.useRef(null);
@@ -40,11 +39,8 @@ const Login = () => {
 
 	function getAuthorisation(e) {
 		e.preventDefault();
-		dispatch(getAuth({
-			"email": email,
-			"password": password
-		}));
-		dispatch({ type: SET_PASSWORD, payload: password })
+		dispatch(getAuth(values));
+		dispatch(setPassword(values.password))
 	}
 
 	if (isAuth) {
@@ -55,7 +51,6 @@ const Login = () => {
 		)
 	}
 
-
 	return (
 		<div className={`${login.section}`}>
 			<h1 className={`${login.title} text text_type_main-medium  mb-5`}>Вход</h1>
@@ -64,9 +59,9 @@ const Login = () => {
 					<Input
 						type={'text'}
 						placeholder={'E-mail'}
-						onChange={e => setEmail(e.target.value)}
-						value={email}
-						name={'name'}
+						onChange={e => handleChange(e)}
+						value={values.email}
+						name={'email'}
 						error={false}
 						ref={inputRef}
 						onIconClick={onIconClick}
@@ -78,9 +73,9 @@ const Login = () => {
 					<Input
 						type={visiblePassword}
 						placeholder={'Пароль'}
-						onChange={e => setPassword(e.target.value)}
-						value={password}
-						name={'name'}
+						onChange={e => handleChange(e)}
+						value={values.password}
+						name={'password'}
 						error={false}
 						ref={inputRef}
 						onIconClick={onIconClick}

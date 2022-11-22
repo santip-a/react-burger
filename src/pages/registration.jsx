@@ -1,15 +1,13 @@
 import React from 'react';
 import registration from './registration.module.css';
-import { getRegistration } from '../services/actions/auth-user'
+import { getRegistration, setPassword } from '../services/actions/auth-user'
 import { Input, ShowIcon, HideIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useHistory, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { useForm } from '../hooks/useForm';
 
 const Registration = () => {
-	const [name, setName] = React.useState('');
-	const [email, setEmail] = React.useState('');
-	const [password, setPassword] = React.useState('');
+	const { values, handleChange } = useForm({ name: '', email: '', password: '' });
 	const [visiblePassword, setvisiblePassword] = React.useState('password');
 	const [visiblePasswordIcon, setvisiblePasswordIcon] = React.useState(false);
 	const inputRef = React.useRef(null);
@@ -23,8 +21,8 @@ const Registration = () => {
 	}
 
 	const navigation = React.useCallback(
-		(e, f,) => {
-			history.replace({ pathname: f });
+		(e, path,) => {
+			history.replace({ pathname: path });
 		},
 		[history]
 	);
@@ -44,12 +42,8 @@ const Registration = () => {
 
 	const registerInApp = (e) => {
 		e.preventDefault();
-		const form = {
-			"name": name,
-			"email": email,
-			"password": password,
-		}
-		dispatch(getRegistration(form));
+		dispatch(getRegistration(values));
+		dispatch(setPassword(values.password))
 	}
 
 	if (isAuth) {
@@ -68,8 +62,8 @@ const Registration = () => {
 					<Input
 						type={'text'}
 						placeholder={'Имя'}
-						onChange={e => setName(e.target.value)}
-						value={name}
+						onChange={e => handleChange(e)}
+						value={values.name}
 						name={'name'}
 						error={false}
 						ref={inputRef}
@@ -82,9 +76,9 @@ const Registration = () => {
 					<Input
 						type={'text'}
 						placeholder={'E-mail'}
-						onChange={e => setEmail(e.target.value)}
-						value={email}
-						name={'name'}
+						onChange={e => handleChange(e)}
+						value={values.email}
+						name={'email'}
 						error={false}
 						ref={inputRef}
 						onIconClick={onIconClick}
@@ -96,9 +90,9 @@ const Registration = () => {
 					<Input
 						type={visiblePassword}
 						placeholder={'Пароль'}
-						onChange={e => setPassword(e.target.value)}
-						value={password}
-						name={'name'}
+						onChange={e => handleChange(e)}
+						value={values.password}
+						name={'password'}
 						error={false}
 						ref={inputRef}
 						onIconClick={onIconClick}

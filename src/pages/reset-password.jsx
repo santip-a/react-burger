@@ -4,10 +4,10 @@ import { Input, ShowIcon, HideIcon, Button } from "@ya.praktikum/react-developer
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
 import { ressetPassword } from '../services/actions/auth-user';
 import { useSelector, useDispatch } from 'react-redux';
+import { useForm } from '../hooks/useForm';
 
 const ResetPassword = () => {
-	const [password, setPassword] = React.useState('');
-	const [smsCode, setSmsCode] = React.useState('');
+	const { values, handleChange } = useForm({ password: '', token: '' });
 	const [visiblePassword, setvisiblePassword] = React.useState('password');
 	const [visiblePasswordIcon, setvisiblePasswordIcon] = React.useState(false);
 	const inputRef = React.useRef(null);
@@ -42,7 +42,7 @@ const ResetPassword = () => {
 
 	const getResset = (e) => {
 		e.preventDefault();
-		dispatch(ressetPassword({ "password": password, "token": smsCode }))
+		dispatch(ressetPassword(values))
 	}
 
 	if (state === undefined) {
@@ -77,9 +77,9 @@ const ResetPassword = () => {
 					<Input
 						type={visiblePassword}
 						placeholder={'Введите новый пароль'}
-						onChange={e => setPassword(e.target.value)}
-						value={password}
-						name={'name'}
+						onChange={e => handleChange(e)}
+						value={values.password}
+						name={'password'}
 						error={false}
 						ref={inputRef}
 						onIconClick={onIconClick}
@@ -94,9 +94,9 @@ const ResetPassword = () => {
 					<Input
 						type={'text'}
 						placeholder={'Введите код из письма'}
-						onChange={e => setSmsCode(e.target.value)}
-						value={smsCode}
-						name={'name'}
+						onChange={e => handleChange(e)}
+						value={values.token}
+						name={'token'}
 						error={false}
 						ref={inputRef}
 						onIconClick={onIconClick}
