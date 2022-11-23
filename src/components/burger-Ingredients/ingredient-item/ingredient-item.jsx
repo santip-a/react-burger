@@ -36,7 +36,8 @@ const IngredientItem = (props) => {
     dispatch({ type: ADD_INGREDIENT_DETAILS, payload: item });
     history.replace({
       pathname: `/ingredients/${item._id}`,
-      state: userAuth ? { background: location } : null
+      //state: userAuth ? { background: location } : null
+      state:{ background: location }
     });
   }
 
