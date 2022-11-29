@@ -26,9 +26,19 @@ const OrderInfo = () => {
     return location.state ? orderInfoStyle.numberOrderModal : orderInfoStyle.numberOrder
   }
 
+  function getPathWs() {
+    const path = location.pathname.split('/');
+    const previousPage = path[path.length - 2];
+    if (previousPage === 'orders') {
+      return wsConnectionStart(null, true)
+    }
+    return wsConnectionStart('/all')
+  }
+
+
   useEffect(() => {
     if (data.length === 0) {
-      dispatch(wsConnectionStart());
+      dispatch(getPathWs());
       return () => {
         dispatch(wsConnectionClosed());
       }
