@@ -6,12 +6,12 @@ import modalStyles from './modal.module.css';
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 
-const Modal = ({onClose, children }) => {
+const Modal = ({ onClose, children }) => {
 
   React.useEffect(() => {
     const pressEsc = (e) => {
-        if (e.key === 'Escape')
-          onClose();
+      if (e.key === 'Escape')
+        onClose();
     }
 
     document.addEventListener('keydown', pressEsc);
@@ -19,18 +19,17 @@ const Modal = ({onClose, children }) => {
 
   }, [])
 
-
-  return ReactDOM.createPortal (
-    ( <>
-     <div className={modalStyles.window}>
-       <button className={`${modalStyles.buttonClose} mt-15 mr-10`} onClick={onClose}>
-         <CloseIcon />
-       </button>
-       {children}
-     </div>
-     <ModalOverlay onCloseOverlay={onClose}/>
-     </>), document.getElementById("modal")
-   )
+  return ReactDOM.createPortal(
+    (<>
+      <div className={modalStyles.window}>
+        <button className={`${modalStyles.buttonClose} mt-15 mr-10`} onClick={onClose}>
+          <CloseIcon />
+        </button>
+        {children}
+      </div>
+      <ModalOverlay onCloseOverlay={onClose} />
+    </>), document.getElementById("modal")
+  )
 }
 
 Modal.propTypes = {

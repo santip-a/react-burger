@@ -7,6 +7,7 @@
 .list {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 15px;
+  column-gap: 5px;
+  row-gap: 25px;
 }
 

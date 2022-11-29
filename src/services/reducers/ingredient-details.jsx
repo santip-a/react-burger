@@ -7,7 +7,7 @@ const initialDetails = {
   elem: {}
 }
 
-export const ingredientDetalis = (state = initialDetails, action ) => {
+export const ingredientDetalis = (state = initialDetails, action) => {
   switch (action.type) {
     case ADD_INGREDIENT_DETAILS: {
       return {

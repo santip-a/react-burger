@@ -1,0 +1,30 @@
+.section {
+  display: flex;
+}
+
+.nav {
+  width: 337px;
+}
+
+.section div div {
+  width: 100%;
+  position: relative;
+}
+
+.link button {
+ padding: 0 0 0 10px;
+}
+
+.link{
+  color: #F2F2F3;
+  display: flex;
+  text-decoration: none;
+}
+
+.activeLink p {
+  color:aqua;
+}
+
+.button {
+  cursor: pointer;
+}

@@ -13,8 +13,8 @@ const initialIngredients = {
 export const ingredients = (state = initialIngredients, action) => {
   switch (action.type) {
     case GET_INGREDIENTS_DATA_REQUEST: {
-      return {        
-        ...state,        
+      return {
+        ...state,
         isLoading: true,
         errorLoading: false
       };

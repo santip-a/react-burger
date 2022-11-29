@@ -6,6 +6,7 @@ export const DEL_FILLING_T0_CONSTRUCTOR = 'DEL_FILLING_T0_CONSTRUCTOR';
 export const SORT_IN_TO_CONSTRUCTOR = 'SORT_IN_TO_CONSTRUCTOR';
 export const INCREASE_COUTER = 'INCREASE_COUTER';
 export const DECREASE_COUTER = 'DECREASE_COUTER';
+export const RESET_IN_TO_CONSTRUCTOR = 'RESET_IN_TO_CONSTRUCTOR'
 
 
 // ===== проверка типа ингредиента =======

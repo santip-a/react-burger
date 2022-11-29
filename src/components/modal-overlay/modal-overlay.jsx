@@ -1,9 +1,9 @@
 import modalOverlay from './modal-overlay.module.css';
 import PropTypes from 'prop-types';;
 
-const ModalOverlay = ({onCloseOverlay}) => {  
+const ModalOverlay = ({ onCloseOverlay }) => {
     return (
-        <div className={modalOverlay.overlay} onClick={onCloseOverlay}/>
+        <div className={modalOverlay.overlay} onClick={onCloseOverlay} />
     )
 }
 
