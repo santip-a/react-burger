@@ -56,3 +56,4 @@ export const placeOrderDate = (date) => {
 
   return `${day}, ${hours} i-GMT+3`;
 };
+

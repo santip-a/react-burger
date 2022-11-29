@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from 'react-redux';
 import { Loader } from '../../loader/loader';
-import { uuid, placeOrderDate } from '../../../utils/utils';
+import { placeOrderDate } from '../../../utils/utils';
 import { useEffect } from 'react';
 import { wsConnectionStart, wsConnectionClosed } from '../../../services/actions/wsAction'
 
@@ -50,10 +50,10 @@ const OrderInfo = () => {
       default:
         break;
     }
-    uniqueIngredients = Array.from(new Set(burger.ingredients)); 
+    uniqueIngredients = Array.from(new Set(burger.ingredients));
   }
 
-    function getQuantity (elem) {
+  function getQuantity(elem) {
     let result = burger.ingredients.reduce((sum, current) => current === elem ? sum = sum + 1 : sum, 0);
     return result
   }
@@ -62,7 +62,13 @@ const OrderInfo = () => {
     let itemIngredient = dataIngredients.find(item => item._id === ingredients);
     const quantity = getQuantity(ingredients)
     totalPrice = totalPrice + (itemIngredient.price * quantity);
-    ingredientItem = { img: itemIngredient.image_mobile, name: itemIngredient.name, price: itemIngredient.price, quantity: quantity }
+    ingredientItem = {
+      img: itemIngredient.image_mobile,
+      name: itemIngredient.name,
+      price: itemIngredient.price,
+      id: itemIngredient._id,
+      quantity: quantity,
+    }
   }
 
   if (!burger) {
@@ -76,9 +82,8 @@ const OrderInfo = () => {
       <p className={`${statusColor} text text_type_main-default mt-3`}>Выполнен</p>
       <p className={`${orderInfoStyle.listHeader} text text_type_main-medium mb-2`}>Состав:</p>
       <ul className={`${orderInfoStyle.list} custom-scroll`} >
-
-        {uniqueIngredients.map(item => ( 
-          <li key={uuid()} className={`${orderInfoStyle.itemList} mt-4 ml-4`} > {getImgIngredient(item)}
+        {uniqueIngredients.map(item => (
+          <li key={ingredientItem.id} className={`${orderInfoStyle.itemList} mt-4 ml-4`} > {getImgIngredient(item)}
             <div className={`${orderInfoStyle.nameItem}`}>
               <img src={ingredientItem.img} className={`${orderInfoStyle.icon} `} alt="картинка ингредиента" />
               <p className={`text text_type_main-default ml-4`}>{ingredientItem.name}</p>
@@ -89,7 +94,6 @@ const OrderInfo = () => {
             </div>
           </li>
         ))}
-
       </ul>
       <div className={`${orderInfoStyle.total} mt-10`}>
         <p className={`text text_type_main-default `}>{placeOrderDate(burger.updatedAt)}</p>

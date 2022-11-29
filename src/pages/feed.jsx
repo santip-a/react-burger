@@ -11,7 +11,7 @@ const Feed = () => {
   const data = useSelector(state => state.webSoket.orders)
 
   useEffect(() => {
-    dispatch(wsConnectionStart());
+    dispatch(wsConnectionStart('/all'));
     return () => {
       dispatch(wsConnectionClosed());
     }

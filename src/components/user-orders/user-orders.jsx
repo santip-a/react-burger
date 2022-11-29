@@ -15,7 +15,7 @@ const UserOrders = () => {
   let dataClone = Array.from(data);
 
   useEffect(() => {
-    dispatch(wsConnectionStart(true));
+    dispatch(wsConnectionStart(null,true));
     return () => {
       dispatch(wsConnectionClosed());
     }

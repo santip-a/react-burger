@@ -12,10 +12,11 @@ export const wsActions = {
   onMessage: WS_GET_MESSAGE
 }
 
-export const wsConnectionStart = ( flag = false) => {
+export const wsConnectionStart = (payload, user) => {
   return {
     type: WS_CONNECTION_START,
-    user: flag
+    payload,
+    user
   };
 };
 

@@ -2,7 +2,6 @@ import ordersStatusStyle from './ordersStatus.module.css';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Loader } from '../loader/loader';
-import { uuid } from '../../utils/utils';
 
 const OrdersStatus = () => {
   const data = useSelector(state => state.webSoket);
@@ -39,7 +38,7 @@ const OrdersStatus = () => {
           <p className={`${ordersStatusStyle.title} text text_type_main-medium`}>Готовы:</p>
           <ul className={`${ordersStatusStyle.list} `}>
             {ordersDone.map(item => (
-              <li key={uuid()} className={`${ordersStatusStyle.numberReady} text text_type_digits-default mb-2`}>
+              <li key={item} className={`${ordersStatusStyle.numberReady} text text_type_digits-default mb-2`}>
                 {item}
               </li>
             ))}
@@ -49,7 +48,7 @@ const OrdersStatus = () => {
           <p className={`${ordersStatusStyle.title} text text_type_main-medium`}>В&nbsp;работе:</p>
           <ul className={`${ordersStatusStyle.list} `}>
             {ordersNotDone.map(item => (
-              <li key={uuid()} className={`${ordersStatusStyle.numberInWork} text text_type_digits-default mb-2`}>
+              <li key={item} className={`${ordersStatusStyle.numberInWork} text text_type_digits-default mb-2`}>
                 {item}
               </li>
             ))}

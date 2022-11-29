@@ -6,7 +6,7 @@ export const socketMiddleware = (wsUrl, wsActions) => {
 
     return next => action => {
       const { dispatch } = store;
-      const { type } = action;
+      const { type, payload  } = action;
       const {
         wsInit,
         onOpen,
@@ -16,12 +16,12 @@ export const socketMiddleware = (wsUrl, wsActions) => {
       if (action.user && type === wsInit) {
         socket = new WebSocket(`${wsUrl}?token=${getCookie('accessToken')}`);
       } else if (type === wsInit) {  
-        socket = new WebSocket(`${wsUrl}/all`);
+        socket = new WebSocket(`${wsUrl}${payload}`);
       }
 
       if (socket) {
         socket.onopen = evt => {
-          dispatch({ type: "WS_CONNECTION_SUCCESS", payload: evt });
+          dispatch({ type: onOpen, payload: evt });
         };
 
         socket.onmessage = event => {

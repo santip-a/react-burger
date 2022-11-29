@@ -1,7 +1,7 @@
 import orderFeedCardStyle from './orderFeedCard.module.css';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from 'react-redux';
-import { uuid, placeOrderDate } from '../../../utils/utils';
+import { placeOrderDate } from '../../../utils/utils';
 
 const OrderFeedCard = ({ burger, visibleStatus = false }) => {
   const dataIngredients = useSelector(state => state.ingredients.data);
@@ -24,9 +24,15 @@ const OrderFeedCard = ({ burger, visibleStatus = false }) => {
       break;
   }
 
+  function getQuantity(elem) {
+    let result = burger.ingredients.reduce((sum, current) => current === elem ? sum = sum + 1 : sum, 0);
+    return result
+  }
+
   const getImgIngredient = (ingredients) => {
     let itemIngredient = dataIngredients.find(item => item._id === ingredients);
-    totalPrice = totalPrice + itemIngredient.price;
+    const quantity = getQuantity(ingredients)
+    totalPrice = totalPrice + (itemIngredient.price * quantity);
     return itemIngredient.image_mobile
   }
 
@@ -35,6 +41,10 @@ const OrderFeedCard = ({ burger, visibleStatus = false }) => {
       return orderFeedCardStyle.visible
     }
     return orderFeedCardStyle.unVisible
+  }
+
+  function uniqueIngredients(a) {
+    return [...new Set(a)];
   }
 
   return (
@@ -47,8 +57,8 @@ const OrderFeedCard = ({ burger, visibleStatus = false }) => {
       <p className={` text text_type_main-default mt-2 ${visibleOrderStatus()} ${statusColor} `}>{status}</p>
       <div className={`${orderFeedCardStyle.total} mt-6`}>
         <ul className={`${orderFeedCardStyle.list} `}>
-          {burger.ingredients.map(item => (
-            <li className={`${orderFeedCardStyle.iconElem}`} key={uuid()} >
+          {uniqueIngredients(burger.ingredients).map(item => (
+            <li className={`${orderFeedCardStyle.iconElem}`} key={item} >
               <img src={getImgIngredient(item)} className={`${orderFeedCardStyle.icon} `} alt="картинка ингредиента" />
             </li>
           ))}
