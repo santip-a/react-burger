@@ -1,0 +1,70 @@
+.section {
+  width: 640px;
+  margin: 140px auto 0;
+}
+
+.sectionModal {
+  width: 640px;
+  margin-top: 20px;
+  padding: 40px;
+}
+
+.numberOrder {
+  text-align: center;
+}
+
+.numberOrderModal {
+  text-align: left;
+}
+
+.listHeader {
+  margin-top: 66px;
+}
+
+.status {
+  color: #00CCCC;
+}
+
+.itemList {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+.icon {
+  box-sizing: border-box;
+  width: 64px;
+  height: 64px;
+  background: #131316;
+  border-radius: 100px;
+  border: #801ab3 solid 2px;
+  object-fit: cover;
+  margin-left: -16px;
+}
+
+.list {
+  padding: 0;
+  margin: 0;
+  max-height: 330px;
+  overflow-y: scroll;
+}
+
+.itemList {
+  display: flex;
+  align-items: center;
+}
+
+.nameItem {
+  display: flex;
+  align-items: center
+}
+
+.price {
+  display: flex;
+  align-items: center
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+}

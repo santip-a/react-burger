@@ -1,6 +1,6 @@
 import profile from './profile.module.css';
 import { ProfileData } from '../components/profile-data/profile-data';
-import { Route, Switch, NavLink, useHistory, Redirect } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { getCookie } from '../services/api/api';
 import { useDispatch } from 'react-redux';
 import { exitUser } from '../services/actions/auth-user';
@@ -12,15 +12,15 @@ import { getUserData } from '../services/actions/auth-user';
 const Profile = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const userData = useSelector(state => state.authUser);
+  const userData = useSelector(state => state.authUser.userAuth);
 
   React.useEffect(() => {
-    if (userData.userAuth) { dispatch(getUserData()) }
+    if (userData) { dispatch(getUserData()) }
   }, []);
 
   React.useEffect(() => {
-    if (!userData.userAuth) { history.replace({ pathname: '/login' }) }
-  }, [userData.userAuth]);
+    if (!userData) { history.replace({ pathname: '/login' }) }
+  }, [userData]);
 
   const profileExit = () => {
     dispatch(exitUser({
@@ -29,9 +29,9 @@ const Profile = () => {
   }
 
   return (
-    <div className={`${profile.section} mt-30`}>
-      <div className={profile.nav}>
-        <NavLink to='/profile/user' className={profile.link} activeClassName={profile.activeLink}>
+    <div className={`${profile.section}`}>
+      <div className={`${profile.nav} mt-30`}>
+        <NavLink to='/profile' className={profile.link} activeClassName={profile.activeLink}>
           <p className="text text_type_main-medium text_color_inactive pt-5 pb-5 pl-5">Профиль</p>
         </NavLink>
         <NavLink to='/profile/orders' className={profile.link} activeClassName={profile.activeLink}>
@@ -40,11 +40,7 @@ const Profile = () => {
         <p className={`${profile.button} text text_type_main-medium text_color_inactive pt-4 pb-5 pl-5`} onClick={profileExit}>Выход</p>
         <p className="text text_type_main-default text_color_inactive mt-15 pt-4 pb-5 pl-5">В этом разделе вы можете изменить&nbsp;свои персональные данные</p>
       </div>
-      <Switch>
-        <Route path='/profile' exact={true} render={() => <Redirect to="/profile/user" />} />
-        <Route path='/profile/user' exact={true} component={ProfileData} />
-        <Route path='/profile/orders' exact={true} ><h1>orders history</h1></Route>
-      </Switch>
+      <ProfileData />
     </div>
   );
 }

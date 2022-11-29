@@ -17,8 +17,11 @@ import Ingredients from '../../pages/ingredients';
 import Modal from '../../components/modal/modal';
 import IngredientDetails from '../../components/modal/modal-ingredient-details/modal-ingredient-details';
 import Page404 from '../../pages/page_404';
+import Feed from '../../pages/feed';
+import OrderInfo from '../orderFeed/order-info/order-info';
 import { getUserData } from '../../services/actions/auth-user';
 import { getCookie } from '../../services/api/api';
+import ProfileOrders from '../../components/profile-orders/profile-orders'
 
 
 const App = () => {
@@ -39,8 +42,8 @@ const App = () => {
     if (tokenAvailable) { dispatch(getUserData()) }
   }, []);
 
-  const closeModal = () => {
-    history.replace({ pathname: '/' });
+  const closeModal = (path) => {
+    history.replace({ pathname: path });
   };
 
   return (
@@ -63,11 +66,23 @@ const App = () => {
           <Route path="/reset-password" exact={true}>
             <ResetPassword />
           </Route>
-          <ProtectedRoute path="/profile" >
+          <ProtectedRoute path="/profile" exact={true}>
             <Profile />
+          </ProtectedRoute>
+          <ProtectedRoute path="/profile/orders" exact={true}>
+            <ProfileOrders />
           </ProtectedRoute>
           <Route path="/ingredients/:id" >
             <Ingredients />
+          </Route>
+          <Route path="/feed" exact={true}>
+            <Feed />
+          </Route>
+          <Route path="/feed/:id" exact={true}>
+            <OrderInfo />
+          </Route>
+          <Route path="/profile/orders/:id" exact={true}>
+            <OrderInfo />
           </Route>
           <Route path='*'>
             <Page404 />
@@ -76,8 +91,22 @@ const App = () => {
 
         {background &&
           (<Route path="/ingredients/:id" >
-            <Modal onClose={closeModal}>
+            <Modal onClose={() => closeModal('/')}>
               <IngredientDetails />
+            </Modal>
+          </Route>)}
+
+        {background &&
+          (<Route path="/feed/:id" >
+            <Modal onClose={() => closeModal('/feed')}>
+              <OrderInfo />
+            </Modal>
+          </Route>)}
+
+        {background &&
+          (<Route path="/profile/orders/:id" >
+            <Modal onClose={() => closeModal('/profile/orders')}>
+              <OrderInfo />
             </Modal>
           </Route>)}
 

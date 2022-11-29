@@ -1,3 +1,6 @@
+import { format, formatDistanceToNowStrict, isToday, isYesterday } from "date-fns";
+import { ru } from "date-fns/locale";
+
 export function checkResponse(res) {
   if (res.ok) {
     return res.json();
@@ -34,3 +37,22 @@ export function setCookie(name, value, props) {
   document.cookie = updatedCookie + ";path=/";
 }
 
+
+export const placeOrderDate = (date) => {
+
+  const dateCreatedOrder = new Date(date);
+
+  const day = isToday(dateCreatedOrder)
+    ? 'Сегодня'
+    : isYesterday(dateCreatedOrder)
+    ? 'Вчера'
+    : formatDistanceToNowStrict(dateCreatedOrder, {
+        unit: 'day',      // кол-во дней, если не 'сегодня-вчера'
+        addSuffix: true, // 'назад'
+        locale: ru,
+      });
+
+  const hours = format(dateCreatedOrder, 'p', {locale: ru}); //24-ч 'русская' система
+
+  return `${day}, ${hours} i-GMT+3`;
+};

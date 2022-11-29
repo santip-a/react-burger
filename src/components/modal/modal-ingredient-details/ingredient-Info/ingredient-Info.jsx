@@ -6,6 +6,7 @@ const IngridientInfo = () => {
   const data = useSelector(state => state.ingredients.data);
   const params = useParams();
   const elem = data.find(elem => elem._id === params.id);
+  
   if (!elem) return null;
 
   return (

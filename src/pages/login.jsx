@@ -7,7 +7,7 @@ import { getAuth, setPassword } from '../services/actions/auth-user';
 import { useForm } from '../hooks/useForm'
 
 const Login = () => {
-	const { values, handleChange } = useForm({ email: '',  password: ''});
+	const { values, handleChange } = useForm({ email: '', password: '' });
 	const [visiblePassword, setvisiblePassword] = React.useState('password');
 	const [visiblePasswordIcon, setvisiblePasswordIcon] = React.useState(false);
 	const inputRef = React.useRef(null);

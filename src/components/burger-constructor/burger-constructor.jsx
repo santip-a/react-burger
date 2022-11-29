@@ -29,10 +29,6 @@ const BurgerConstructor = () => {
   let elemIn = {};
 
 
-  // React.useEffect(() => {
-  //console.log(loadingOrder)
-  // }, [loadingOrder]);
-
   const priceFillings = useMemo(() => {
     return fillings.reduce(function (sum, current) {
       return sum + current.price;

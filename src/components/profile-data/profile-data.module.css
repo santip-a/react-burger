@@ -2,6 +2,10 @@
   width: 480px;
 }
 
+.inputs div div {
+  width: 100%;
+}
+
 .icon,.pen {
   position: absolute;
   right: 24px;

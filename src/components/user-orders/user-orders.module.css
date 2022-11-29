@@ -1,0 +1,13 @@
+.ordersList {
+  padding: 0 0 50px;
+  margin-left: 50px;
+  margin-right: 20px;
+  flex-grow: 2;
+  max-height: 85vh;
+  overflow-y: scroll;
+}
+
+.ordersListItem {
+  list-style: none;
+  margin-bottom: 20px;
+}
