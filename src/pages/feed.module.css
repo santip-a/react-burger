@@ -1,0 +1,7 @@
+.table {
+  display: flex;
+}
+
+.orders {
+  min-width: 600px;
+}

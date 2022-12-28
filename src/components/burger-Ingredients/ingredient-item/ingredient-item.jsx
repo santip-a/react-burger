@@ -13,7 +13,7 @@ const IngredientItem = (props) => {
   const bunInConstructor = useSelector(state => state.ingredientsInConstructor.bunType)
   const fillingInConstructor = useSelector(state => state.ingredientsInConstructor.filling)
   const history = useHistory();
-  let location = useLocation();
+  const location = useLocation();
   const { userAuth } = useSelector(state => state.authUser);
 
   // ------- подсчет счетчика ингредиентов----------
@@ -36,13 +36,12 @@ const IngredientItem = (props) => {
     dispatch({ type: ADD_INGREDIENT_DETAILS, payload: item });
     history.replace({
       pathname: `/ingredients/${item._id}`,
-      //state: userAuth ? { background: location } : null
       state:{ background: location }
     });
   }
-
+  
   return (
-    <li className={`${ingredientItem.item} mt-6 mb-1`} onClick={() => openIngredientDetalis()} ref={dragRef} >
+    <li className={`${ingredientItem.item} mt-6 mb-1`} onClick={openIngredientDetalis} ref={dragRef} >
       {number > 0 && <Counter count={number} size='default' />}
       <img src={item.image} alt={item.name} />
       <div className={`${ingredientItem.price} mt-2 mb-2`} >

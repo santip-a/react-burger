@@ -65,7 +65,7 @@ export const ProfileData = () => {
 
   return (
     <form onSubmit={e => onFormSubmit(e)} name='prfofile'>
-      <div name="profileData" className={`${profile.inputs} ml-15`}>
+      <div name="profileData" className={`${profile.inputs} ml-15 mt-30`}>
         <div className='mb-6'>
           <Input
             type={'text'}
