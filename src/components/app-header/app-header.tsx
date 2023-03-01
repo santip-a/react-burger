@@ -1,8 +1,9 @@
 import header from './app-header.module.css';
 import { BurgerIcon, ListIcon, Logo } from '@ya.praktikum/react-developer-burger-ui-components'
 import { NavLink } from 'react-router-dom';
+import { FC } from 'react';
 
-const AppHeader = () => {
+const AppHeader: FC = () => {
 
   return (
     <header className={`${header.header} mt-10 pb-4`}>
