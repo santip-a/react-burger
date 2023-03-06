@@ -4,9 +4,10 @@ import {
   GET_INGREDIENTS_DATA_SUCCESS,
   TIngredientActions
 } from '../actions/ingredients'
+import {TItemIngredient} from '../../utils/types'
 
 type TInitialIngredients = {
-  data: [],
+  data: TItemIngredient[],
   isLoading: boolean,
   errorLoading: boolean
 }

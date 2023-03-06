@@ -10,22 +10,28 @@ const Login = () => {
 	const { values, handleChange } = useForm({ email: '', password: '' });
 	const [visiblePassword, setvisiblePassword] = React.useState<"text" | "password" | "email">('password');
 	const [visiblePasswordIcon, setvisiblePasswordIcon] = React.useState(false);
-	const inputRef: any = React.useRef(null);
+	const inputRef = React.useRef<HTMLInputElement>(null);
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const isAuth = useSelector(state => state.authUser.userAuth);
-	const { state } = useLocation<any>();
+	const { state } = useLocation<LocationState>();
+
+	interface LocationState {
+		from: {
+			pathname: string;
+		};
+	}
 
 	const onIconClick = () => {
-		setTimeout(() => inputRef.current.focus(), 0);
+		setTimeout(() => inputRef.current!.focus(), 0);
 		alert('Icon Click Callback');
 	}
 
-	const navigation = (e: any, f: string,) => {
+	const navigation = (e: React.SyntheticEvent<Element, Event>, f: string,) => {
 		history.replace({ pathname: f });
 	}
 
-	const toggleVisiblePassword = (e: any) => {
+	const toggleVisiblePassword = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
 		e.preventDefault();
 		if (visiblePassword === 'password') {
 			setvisiblePassword('text');
@@ -60,7 +66,7 @@ const Login = () => {
 						type={'text'}
 						placeholder={'E-mail'}
 						onChange={e => handleChange(e)}
-						value={values.email}
+						value={values.email ? values.email : ''}
 						name={'email'}
 						error={false}
 						ref={inputRef}
@@ -74,7 +80,7 @@ const Login = () => {
 						type={visiblePassword}
 						placeholder={'Пароль'}
 						onChange={e => handleChange(e)}
-						value={values.password}
+						value={values.password ? values.password : ''}
 						name={'password'}
 						error={false}
 						ref={inputRef}

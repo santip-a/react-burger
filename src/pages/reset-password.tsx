@@ -6,24 +6,30 @@ import { ressetPassword } from '../services/actions/auth-user';
 import { useSelector, useDispatch } from '../services/types/hooks';
 import { useForm } from '../hooks/useForm';
 
+interface LocationState {
+	from: {
+		pathname: string;
+	};
+}
+
 const ResetPassword = () => {
 	const { values, handleChange } = useForm({ password: '', token: '' });
 	const [visiblePassword, setvisiblePassword] = React.useState<"password" | "text" | "email">('password');
 	const [visiblePasswordIcon, setvisiblePasswordIcon] = React.useState(false);
-	const inputRef: any = React.useRef(null);
+	const inputRef= React.useRef<HTMLInputElement>(null);
 	const history = useHistory();
 	const isAuth = useSelector(state => state.authUser.userAuth);
-	const { state } = useLocation<any>();
+	const { state } = useLocation<LocationState>();
 	const dispatch = useDispatch();
 	const resetPasswordSuccess = useSelector(state => state.authUser.resetPassword);
 
 	const onIconClick = () => {
-		setTimeout(() => inputRef.current.focus(), 0);
+		setTimeout(() => inputRef.current!.focus(), 0);
 		alert('Icon Click Callback');
 	}
 
 	const navigation = React.useCallback(
-		(e: any, f: string,) => {
+		(e: React.SyntheticEvent<Element, Event>, f: string,) => {
 			history.replace({ pathname: f });
 		},
 		[history]
@@ -78,7 +84,7 @@ const ResetPassword = () => {
 						type={visiblePassword}
 						placeholder={'Введите новый пароль'}
 						onChange={e => handleChange(e)}
-						value={values.password}
+						value={values.password ? values.password : ''}
 						name={'password'}
 						error={false}
 						ref={inputRef}
@@ -95,7 +101,7 @@ const ResetPassword = () => {
 						type={'text'}
 						placeholder={'Введите код из письма'}
 						onChange={e => handleChange(e)}
-						value={values.token}
+						value={values.token ? values.token : ''}
 						name={'token'}
 						error={false}
 						ref={inputRef}

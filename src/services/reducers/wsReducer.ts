@@ -36,7 +36,6 @@ export const webSoket = (state = initWebSoketState, action: TWsActions): TInitWe
       return {
         ...state,
         wsConnected: false,
-        //wsError: action.payload
         wsError: true
       };
     }

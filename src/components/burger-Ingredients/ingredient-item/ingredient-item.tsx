@@ -6,8 +6,8 @@ import { useDrag } from "react-dnd";
 import { useSelector, useDispatch } from '../../../services/types/hooks';
 import { ADD_INGREDIENT_DETAILS } from '../../../services/actions/ingredient-details';
 import { useHistory, useLocation } from 'react-router-dom';
-import  { FC } from "react";
-import {TItemIngredient} from '../../../utils/types'
+import { FC } from "react";
+import { TItemIngredient } from '../../../utils/types'
 
 type TIngredientItem = {
   item: TItemIngredient,
@@ -16,7 +16,7 @@ type TIngredientItem = {
 
 
 const IngredientItem: FC<TIngredientItem> = ({ item, onClose }) => {
-  
+
   const dispatch = useDispatch();
   const bunInConstructor = useSelector(state => state.ingredientsInConstructor.bunType)
   const fillingInConstructor = useSelector(state => state.ingredientsInConstructor.filling)
@@ -24,9 +24,10 @@ const IngredientItem: FC<TIngredientItem> = ({ item, onClose }) => {
   const location = useLocation();
   const { userAuth } = useSelector(state => state.authUser);
 
- 
+
   // ------- подсчет счетчика ингредиентов----------
   let number = 0
+
   if (bunInConstructor._id === item._id) {
     number = 2
   }
@@ -35,6 +36,8 @@ const IngredientItem: FC<TIngredientItem> = ({ item, onClose }) => {
       number = number + 1
     }
   })
+
+
 
   const [, dragRef] = useDrag({
     type: "ingdredietItem",
@@ -45,17 +48,17 @@ const IngredientItem: FC<TIngredientItem> = ({ item, onClose }) => {
     dispatch({ type: ADD_INGREDIENT_DETAILS, payload: item });
     history.replace({
       pathname: `/ingredients/${item._id}`,
-      state:{ background: location }
+      state: { background: location }
     });
   }
-  
+
   return (
     <li className={`${ingredientItem.item} mt-6 mb-1`} onClick={openIngredientDetalis} ref={dragRef} >
       {number > 0 && <Counter count={number} size='default' />}
       <img src={item.image} alt={item.name} />
       <div className={`${ingredientItem.price} mt-2 mb-2`} >
         <span className='pr-2 text text_type_digits-default'>{item.price}</span>
-        <CurrencyIcon type='primary' className='pl-5' />
+        <CurrencyIcon type='primary' />
       </div>
       <p className='text text_type_main-default'>{item.name}  </p>
     </li>

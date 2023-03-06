@@ -1,21 +1,21 @@
 import { Input, ShowIcon, HideIcon, EditIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import profile from './profile-data.module.css';
-import React, { FC, FormEvent } from 'react';
+import React, { FC, FormEvent, SyntheticEvent } from 'react';
 import { useSelector, useDispatch } from '../../services/types/hooks';
 import { updateUserData } from '../../services/actions/auth-user';
 import { useForm } from '../../hooks/useForm';
+import {TInitialAuthUser} from '../../services/reducers/auth-user'
 
 export const ProfileData: FC = () => {
   const { values, handleChange, setValues } = useForm({ name: '', email: '', password: '' });
   const [visiblePasswordIcon, setVisiblePasswordIcon] = React.useState(false);
   const [visiblePassword, setVisiblePassword] = React.useState<"password" | "email" | "text">('password');
   const [visibleButtonSave, setVisibleButtonSave] = React.useState(false);
-  const inputRef: any = React.useRef(null);
-  const userData: any = useSelector(state => state.authUser);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const userData: TInitialAuthUser = useSelector(state => state.authUser);
   const dispatch = useDispatch();
 
-
-  React.useEffect(() => {
+    React.useEffect(() => {
     if (userData.userAuth) {
       setValues({
         name: userData.user.name,
@@ -26,7 +26,7 @@ export const ProfileData: FC = () => {
   }, [userData]);
 
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0);
+    setTimeout(() => inputRef.current!.focus(), 0);
     alert('Icon Click Callback');
   }
 
@@ -51,7 +51,7 @@ export const ProfileData: FC = () => {
     setVisibleButtonSave(false);
   }
 
-  const cancelFormSubmit = (e: any) => {
+  const cancelFormSubmit = (e: SyntheticEvent<Element, Event>) => {
     e.preventDefault();
     setValues({
       name: userData.user.name,
@@ -60,7 +60,7 @@ export const ProfileData: FC = () => {
     })
   }
 
-  const check = (stateData: string, inputData: string) => {
+  const check = (stateData: 'name' | 'email' | 'password' , inputData: string) => {
     userData.user[stateData] === inputData ? setVisibleButtonSave(false) : setVisibleButtonSave(true)
   }
 
@@ -72,7 +72,8 @@ export const ProfileData: FC = () => {
             type={'text'}
             placeholder={'Имя'}
             onChange={e => { handleChange(e); check('name', e.target.value) }}
-            value={values.name}
+            // value={values.name}
+            value={values.name ? values.name : ''}
             name={'name'}
             error={false}
             ref={inputRef}
@@ -89,7 +90,7 @@ export const ProfileData: FC = () => {
             type={'text'}
             placeholder={'E-mail'}
             onChange={e => { handleChange(e); check('email', e.target.value) }}
-            value={values.email}
+            value={values.email ? values.email : ''}
             name={'email'}
             error={false}
             ref={inputRef}
@@ -105,8 +106,8 @@ export const ProfileData: FC = () => {
           <Input
             type={visiblePassword}
             placeholder={'Пароль'}
-            onChange={(e: any) => { handleChange(e); check('email', e.target.password) }}
-            value={values.password}
+            onChange={e => { handleChange(e); check('email', e.target.value) }}
+            value={values.password ? values.password : ''}
             name={'password'}
             error={false}
             ref={inputRef}

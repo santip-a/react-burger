@@ -1,4 +1,6 @@
-import { getDataApi } from '../api/api'
+import { getDataApi } from '../api/api';
+import {AppThunk, AppDispatch} from '../types/index'
+import {TItemIngredient} from '../../utils/types'
 
 export const GET_INGREDIENTS_DATA_REQUEST: 'GET_INGREDIENTS_DATA' = 'GET_INGREDIENTS_DATA';
 export const GET_INGREDIENTS_DATA_FAILED: 'GET_INGREDIENTS_DATA_FAILED' = 'GET_INGREDIENTS_DATA_FAILED';
@@ -14,7 +16,7 @@ export interface IGetIngredientsDataFailedAction {
 
 export interface IGetIngredientsDataSuccassAction {
   readonly type: typeof GET_INGREDIENTS_DATA_SUCCESS;
-  readonly payload: any
+  readonly payload: TItemIngredient[]
 }
 
 export type TIngredientActions =
@@ -22,8 +24,8 @@ export type TIngredientActions =
   | IGetIngredientsDataFailedAction
   | IGetIngredientsDataSuccassAction
 
-export function getData() {
-  return function (dispatch: any) {
+export const getData: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: GET_INGREDIENTS_DATA_REQUEST
     })

@@ -1,4 +1,6 @@
 import { getOrderApi } from '../api/api';
+import {AppThunk, AppDispatch} from '../types/index'
+import {TOrder} from '../../utils/types'
 
 export const CREATE_ORDER_REQUEST: 'CREATE_ORDER_REQUEST' = 'CREATE_ORDER_REQUEST';
 export const CREATE_ORDER_SUCCESS: 'CREATE_ORDER_SUCCESS' = 'CREATE_ORDER_SUCCESS';
@@ -11,7 +13,7 @@ export interface ICreatOrderRequestAction {
 
 export interface ICreatOrderSuccessAction {
   readonly type: typeof CREATE_ORDER_SUCCESS;
-  readonly payload: any
+  readonly payload: TOrder
 }
 
 export interface ICreatOrderCleardAction {
@@ -29,8 +31,8 @@ export type TOrderActions =
   | ICreatOrderFailedAction
 
 
-export const getOrder = (listId: any) => {
-  return function (dispatch: any) {
+export const getOrder: AppThunk = (listId: string[]) => {
+  return function (dispatch: AppDispatch) {
     dispatch({ type: CREATE_ORDER_CLEAR })
     dispatch({
       type: CREATE_ORDER_REQUEST

@@ -3,7 +3,7 @@ import { useSelector } from '../../services/types/hooks';
 import  { FC, ReactNode } from "react";
 
 type TProtectedRoute = {
-  children: any
+  children: React.ReactNode
   path: string
   exact: boolean
 }

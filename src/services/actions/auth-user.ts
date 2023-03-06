@@ -9,6 +9,7 @@ import {
   resetPasswordApi
 } from '../api/api';
 import { setCookie } from '../../utils/utils';
+import {AppThunk, AppDispatch} from '../types/index'
 
 export const USER_AUTH: 'USER_AUTH' = 'USER_AUTH';
 export const API_REQUEST: 'API_REQUEST' = 'API_REQUEST';
@@ -25,7 +26,7 @@ export const RESET_FORGOT_PASSWORD: 'RESET_FORGOT_PASSWORD' = 'RESET_FORGOT_PASS
 
 export interface IUserAuthAction {
   readonly type: typeof USER_AUTH;
-  readonly payload: any
+  readonly payload: {name: string, email: string}
 }
 
 export interface IApiRequestAction {
@@ -62,7 +63,7 @@ export interface IResetPasswordAction {
 
 export interface ISetPasswordAction {
   readonly type: typeof SET_PASSWORD;
-  readonly payload: any
+  readonly payload: string | undefined
 }
 
 export interface IResetForgotPasswordAction {
@@ -98,7 +99,7 @@ const apiRequest = (): IApiRequestAction => {
   }
 }
 
-const userAuthApi = (data: any): IUserAuthAction => {
+const userAuthApi = (data: {success: boolean, user: {email: string, name: string}}): IUserAuthAction => {  
   return {
     type: USER_AUTH,
     payload: data.user
@@ -135,7 +136,7 @@ const tokenUpdatedFailed = (): ITokenUpdatedFailedAction => {
   }
 }
 
-export const setPassword = (data: any): ISetPasswordAction => {
+export const setPassword = (data: string | undefined): ISetPasswordAction => {
   return {
     type: SET_PASSWORD,
     payload: data
@@ -148,8 +149,8 @@ export const setForgotPasswor = (): IResetForgotPasswordAction => {
   }
 }
 
-export function getRegistration(form: any) {
-  return function (dispatch: any) {
+export const getRegistration: AppThunk = (form: {email?: string, name?: string, password?: string}) => {
+  return function (dispatch: AppDispatch) {
     dispatch(apiRequest())
     getRegistrationApi(form)
       .then(
@@ -166,8 +167,8 @@ export function getRegistration(form: any) {
   }
 }
 
-export function forgotPassword(form: any) {
-  return function (dispatch: any) {
+export const forgotPassword: AppThunk = (form: {email?: string}) => {  
+  return function (dispatch: AppDispatch) {
     dispatch(apiRequest())
     forgotPasswordApi(form)
       .then(
@@ -182,8 +183,8 @@ export function forgotPassword(form: any) {
   }
 }
 
-export function ressetPassword(form: any) {
-  return function (dispatch: any) {
+export const ressetPassword: AppThunk = (form: {password?: string, token?: string}) => {  
+  return function (dispatch: AppDispatch) {
     dispatch(apiRequest())
     resetPasswordApi(form)
       .then(
@@ -198,8 +199,8 @@ export function ressetPassword(form: any) {
   }
 }
 
-export function getAuth(form: any) {
-  return function (dispatch: any) {
+export const  getAuth: AppThunk = (form: {email?: string, password?: string}) => {  
+  return function (dispatch: AppDispatch) {
     dispatch(apiRequest())
     getAuthApi(form)
       .then(
@@ -216,8 +217,8 @@ export function getAuth(form: any) {
   }
 }
 
-export function exitUser(form: any) {
-  return function (dispatch: any) {
+export const exitUser: AppThunk = (form: {token?: string}) => {
+  return function (dispatch: AppDispatch) {
     dispatch(apiRequest())
     getLogoutApi(form)
       .then(
@@ -235,8 +236,8 @@ export function exitUser(form: any) {
 }
 
 
-export function getUserData() {
-  return function (dispatch: any) {
+export const getUserData: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
     dispatch(apiRequest())
     getUserApi()
       .then(
@@ -259,7 +260,7 @@ export function getUserData() {
         getAccessToken()
         .then(
           (res) => {
-            dispatch(getUserData());
+            dispatch(apiRequest());
             dispatch(tokenUpdated())
             console.log('Заменили :-) ');
           }
@@ -272,8 +273,9 @@ export function getUserData() {
   }
 }
 
-export function updateUserData(form: any) {
-  return function (dispatch: any) {
+export const updateUserData: AppThunk = (form: {  name: string | undefined;  email: string | undefined;}) => {
+  console.log(form)
+  return function (dispatch: AppDispatch) {
     dispatch(apiRequest())
     updateUserApi(form)
     .then(
@@ -296,7 +298,7 @@ export function updateUserData(form: any) {
       getAccessToken()
       .then(
         (res) => {
-          dispatch(getUserData());
+          dispatch(apiRequest());
           dispatch(tokenUpdated())
           console.log('Заменили :-) ');
         }

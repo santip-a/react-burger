@@ -1,6 +1,7 @@
 import { baseUrl } from '../../constants/constants';
 
-function request(url: string, options?: any) {
+
+function request(url: string, options?: object) {  
   return fetch(url, options).then(checkResponse)
 }
 
@@ -35,7 +36,7 @@ export function getCookie(name: string) {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-const getApi = (data: string, path: string) => {  
+const getApi = (data: {email?: string, name?: string, password?: string, token?: string}, path: string) => {  
   return request(baseUrl + path, {
     method: 'POST',
     headers: {
@@ -55,20 +56,20 @@ export const getAccessTokenApi = () => {
   })
 }
 
-export const getRegistrationApi = (form: string) => {
+export const getRegistrationApi = (form: {email?: string, name?: string, password?: string}) => {
   return getApi(form, '/auth/register')
 }
 
 
-export const forgotPasswordApi = (email: string) => {
+export const forgotPasswordApi = (email: {email?: string}) => {
   return getApi(email, '/password-reset')
 }
 
-export const resetPasswordApi = (data: string) => {
+export const resetPasswordApi = (data: {password?: string, token?: string}) => {
   return getApi(data, '/password-reset/reset')
 }
 
-export const getAuthApi = (data: any) => {
+export const getAuthApi = (data: {email?: string, password?: string}) => {
   return request(baseUrl + '/auth/login', {
     method: 'POST',
     headers: {
@@ -79,7 +80,7 @@ export const getAuthApi = (data: any) => {
   })
 }
 
-export const getLogoutApi = (data: string) => {
+export const getLogoutApi = (data: {token?: string}) => {
   return getApi(data, '/auth/logout')
 }
 
@@ -93,7 +94,7 @@ export const getUserApi = () => {
   })
 }
 
-export const updateUserApi = (data: string) => {
+export const updateUserApi = (data: {  name: string | undefined;  email: string | undefined;}) => {
   return request(baseUrl + '/auth/user', {
     method: 'PATCH',
     headers: {

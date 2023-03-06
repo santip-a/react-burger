@@ -5,15 +5,36 @@ import {
   CREATE_ORDER_CLEAR,
   TOrderActions
 } from '../actions/order'
+import {TOrder, TItemIngredient} from '../../utils/types'
 
 type TInicialOrder = {
-  order: {} | any,
+  order: TOrder 
   isLoading: boolean,
   errorLoadinf: boolean
 }
 
 const inicialOrder: TInicialOrder = {
-  order: {} ,
+  order: {
+    name: '',
+    order: {
+      createdAt: '',
+      ingredients: [],
+      length: 0,
+      name: '',
+      number: 0,
+      owner: {
+        createdAt: '',
+        email: '',
+        name: '',
+        updatedAt: '',
+      },
+      price: 0,
+      status: '',
+      updatedAt: '',
+      _id: '',
+    },
+    success: false
+  },
   isLoading: false,
   errorLoadinf: false
 }
@@ -47,7 +68,27 @@ export const orderDetalis = (state = inicialOrder, action:TOrderActions): TInici
     case CREATE_ORDER_CLEAR: {
       return {
         ...state,
-        order: {}
+        order: {
+          name: '',
+          order: {
+            createdAt: '',
+            ingredients: [],
+            length: 0,
+            name: '',
+            number: 0,
+            owner: {
+              createdAt: '',
+              email: '',
+              name: '',
+              updatedAt: '',
+            },
+            price: 0,
+            status: '',
+            updatedAt: '',
+            _id: '',
+          },
+          success: false
+        }
       };
     }
 

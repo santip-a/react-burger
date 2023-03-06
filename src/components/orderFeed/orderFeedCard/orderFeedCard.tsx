@@ -2,8 +2,8 @@ import orderFeedCardStyle from './orderFeedCard.module.css';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from '../../../services/types/hooks';
 import { placeOrderDate } from '../../../utils/utils';
-import  { FC } from "react";
-import {TBurger, TItemIngredient} from '../../../utils/types'
+import { FC } from "react";
+import { TBurger, TItemIngredient } from '../../../utils/types'
 
 type TOrderFeedCard = {
   burger: TBurger
@@ -11,10 +11,11 @@ type TOrderFeedCard = {
 }
 
 const OrderFeedCard: FC<TOrderFeedCard> = ({ burger, visibleStatus = false }) => {
-  const dataIngredients = useSelector(state => state.ingredients.data);
+  const dataIngredients: TItemIngredient[] = useSelector(state => state.ingredients.data);
   let status = '';
   let totalPrice = 0;
   let statusColor = null;
+
 
   switch (burger.status) {
     case 'done':
@@ -37,10 +38,13 @@ const OrderFeedCard: FC<TOrderFeedCard> = ({ burger, visibleStatus = false }) =>
   }
 
   const getImgIngredient = (ingredients: string) => {
-    let itemIngredient: any = dataIngredients.find((item: TItemIngredient) => item._id === ingredients);
-    const quantity = getQuantity(ingredients)
-    totalPrice = totalPrice + (itemIngredient.price * quantity);
-    return itemIngredient.image_mobile
+
+    let itemIngredient = dataIngredients.find((item) => item._id === ingredients);
+    if (itemIngredient) {
+      const quantity = getQuantity(ingredients)
+      totalPrice = totalPrice + (itemIngredient.price * quantity);
+      return itemIngredient.image_mobile
+    }
   }
 
   const visibleOrderStatus = () => {
@@ -64,8 +68,8 @@ const OrderFeedCard: FC<TOrderFeedCard> = ({ burger, visibleStatus = false }) =>
       <p className={` text text_type_main-default mt-2 ${visibleOrderStatus()} ${statusColor} `}>{status}</p>
       <div className={`${orderFeedCardStyle.total} mt-6`}>
         <ul className={`${orderFeedCardStyle.list} `}>
-          {uniqueIngredients(burger.ingredients).map((item: any) => (
-            <li className={`${orderFeedCardStyle.iconElem}`} key={item} > 
+          {uniqueIngredients(burger.ingredients).map((item: string) => (
+            <li className={`${orderFeedCardStyle.iconElem}`} key={item} >
               <img src={getImgIngredient(item)} className={`${orderFeedCardStyle.icon} `} alt="картинка ингредиента" />
             </li>
           ))}

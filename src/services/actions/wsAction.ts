@@ -6,8 +6,8 @@ export const WS_GET_MESSAGE: 'WS_GET_MESSAGE' = 'WS_GET_MESSAGE';
 
 export interface IIwsConnectionStartAction {
   readonly type: typeof WS_CONNECTION_START;
-  readonly payload: any;
-  readonly user: any;
+  readonly payload: string | null | undefined;
+  readonly user: boolean | undefined;
 }
 
 export interface IwsConnectionSuccessAction {
@@ -24,7 +24,7 @@ export interface IwsConnectionClosedAction {
 
 export interface IwsGetMessageAction {
   readonly type: typeof WS_GET_MESSAGE;
-  readonly payload: any;
+  readonly payload: {orders: [], total: number, totalToday: number};
 }
 
 export type TWsActions = 
@@ -50,7 +50,7 @@ export const wsActions: TwsActionsTypes = {
   onMessage: WS_GET_MESSAGE
 }
 
-export const wsConnectionStart = (payload?: any, user?: any): IIwsConnectionStartAction => {
+export const wsConnectionStart = (payload?: string | null, user?: boolean): IIwsConnectionStartAction => {
   return {
     type: WS_CONNECTION_START,
     payload,
@@ -76,7 +76,7 @@ export const wsConnectionClosed = (): IwsConnectionClosedAction => {
   };
 };
 
-export const wsGetMessage = (message: string): IwsGetMessageAction => {
+export const wsGetMessage = (message: {orders: [], total: number, totalToday: number}): IwsGetMessageAction => {
   return {
     type: WS_GET_MESSAGE,
     payload: message

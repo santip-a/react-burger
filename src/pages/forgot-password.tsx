@@ -9,20 +9,28 @@ import { useForm } from '../hooks/useForm';
 const ForgotPassword = () => {
 	const { values, handleChange } = useForm({ email: '' });
 	const [email, setEmail] = React.useState('');
-	const inputRef: any = React.useRef(null);
+	const inputRef = React.useRef<HTMLInputElement>(null);
 	const history = useHistory();
 	const isAuth = useSelector(state => state.authUser.userAuth);
 	const forgotPasswordSuccess = useSelector(state => state.authUser.forgotPassword);
-	const { state } = useLocation<any>();
+	const { state } = useLocation<LocationState>();
 	const dispatch = useDispatch();
 
+	interface LocationState {
+		from: {
+			pathname: string;
+		};
+	}
+
+
 	const onIconClick = () => {
-		setTimeout(() => inputRef.current.focus(), 0);
+		setTimeout(() => inputRef.current!.focus(), 0);
 		alert('Icon Click Callback');
 	}
 
+
 	const navigation = React.useCallback(
-		(e: any, path: string,) => {
+		(e: React.SyntheticEvent<Element, Event>, path: string,) => {
 			history.replace({ pathname: path });
 		},
 		[history]
@@ -59,7 +67,7 @@ const ForgotPassword = () => {
 						type={'text'}
 						placeholder={'Укажите e-mail'}
 						onChange={e => handleChange(e)}
-						value={values.email}
+						value={values.email ? values.email : ''}
 						name={'email'}
 						error={false}
 						ref={inputRef}

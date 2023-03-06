@@ -4,11 +4,10 @@ import { useSelector } from '../../../../services/types/hooks';
 import {TItemIngredient} from '../../../../utils/types'
 
 const IngridientInfo = () => {
-  const data = useSelector(state => state.ingredients.data);
+  const data: TItemIngredient[] = useSelector(state => state.ingredients.data);
   const params: {id: string} = useParams();
-  const elem: any = data.find((elem: TItemIngredient) => elem._id === params.id);
+  const elem = data.find((elem: TItemIngredient) => elem._id === params.id);
 
-  
   if (!elem) return null;
 
   return (

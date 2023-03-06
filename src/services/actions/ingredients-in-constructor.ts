@@ -1,4 +1,5 @@
 import { uuid } from '../../utils/utils';
+import {TItemIngredient} from '../../utils/types'
 
 export const ADD_FILLING_TO_CONSTRUCTOR: 'ADD_FILLING_TO_CONSTRUCTOR' = 'ADD_FILLING_TO_CONSTRUCTOR';
 export const ADD_BUN_TO_CONSTRUCTOR: 'ADD_BUN_TO_CONSTRUCTOR' = 'ADD_BUN_TO_CONSTRUCTOR';
@@ -10,22 +11,22 @@ export const RESET_IN_TO_CONSTRUCTOR: 'RESET_IN_TO_CONSTRUCTOR' = 'RESET_IN_TO_C
 
 export interface IAddFillingToConstructortAction {
   readonly type: typeof ADD_FILLING_TO_CONSTRUCTOR;
-  readonly payload: number
+  readonly payload: TItemIngredient
 }
 
 export interface IAddBunToConstructortAction {
   readonly type: typeof ADD_BUN_TO_CONSTRUCTOR;
-  readonly payload: any
+  readonly payload: TItemIngredient
 }
 
 export interface IDelFillingToConstructortAction {
   readonly type: typeof DEL_FILLING_T0_CONSTRUCTOR;
-  readonly payload: any
+  readonly payload: TItemIngredient
 }
 
 export interface ISortInToConstructortAction {
   readonly type: typeof SORT_IN_TO_CONSTRUCTOR;
-  readonly payload: any
+  readonly payload: TItemIngredient[]
 }
 
 export interface IIncreaseCouterAction {
@@ -52,7 +53,7 @@ export type TIngredientsInConstructorActions =
 
 
 // ===== проверка типа ингредиента =======
-export function checkIngredientType(item: any) {
+export function checkIngredientType(item: TItemIngredient) {
   const cloneItem = Object.assign({}, item);
   cloneItem.idInBurger = uuid();
   if (item.type === 'bun') {
@@ -62,7 +63,7 @@ export function checkIngredientType(item: any) {
 }
 
 // =====  сортировка ингредиентов  ========
-export function sortInToConstructor(indexOut:any, elemIn: any, fillingList: any) {
+export function sortInToConstructor(indexOut:number, elemIn: TItemIngredient, fillingList: TItemIngredient[]) {
   const indexElem = fillingList.indexOf(elemIn)
   fillingList.splice(indexElem, 1);
   fillingList.splice(indexOut, 0, elemIn);

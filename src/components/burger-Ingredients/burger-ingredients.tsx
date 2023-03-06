@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {SyntheticEvent} from 'react';
 import burgerIngredients from './burger-ingredients.module.css';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientList from './ingredient-list/ingredient-list';
@@ -15,37 +15,39 @@ const BurgerIngredients = () => {
   const data = useSelector((state) => state.ingredients.data)
   const dispatch = useDispatch();
 
-  const bunRef: React.MutableRefObject<any> = React.useRef();
-  const sauceRef: React.MutableRefObject<any> = React.useRef();
-  const mainRef: React.MutableRefObject<any> = React.useRef();
+  const bunRef = React.useRef<HTMLUListElement>();
+  const sauceRef = React.useRef<HTMLUListElement>();
+  const mainRef = React.useRef<HTMLUListElement>();
+
+  
 
   React.useEffect(() => {
     dispatch({ type: DEL_INGREDIENT_DETAILS })
   }, []);
 
-  const scrollIngedients = (e: any) => {
+  const scrollIngedients = (e: string) => {
     setCurrent(e);
     switch (e) {
       case 'bun':
-        bunRef.current.scrollIntoView({ behavior: "smooth" });
+        bunRef.current!.scrollIntoView({ behavior: "smooth" });
         break;
     }
     switch (e) {
       case 'sauce':
-        sauceRef.current.scrollIntoView({ behavior: "smooth" });
+        sauceRef.current!.scrollIntoView({ behavior: "smooth" });
         break;
     }
     switch (e) {
       case 'main':
-        mainRef.current.scrollIntoView({ behavior: "smooth" });
+        mainRef.current!.scrollIntoView({ behavior: "smooth" });
         break;
     }
   }
 
   // ============ функция получения координат разделов ингредиентов
-  function getCoordinates(elem: React.MutableRefObject<any>) {
+  function getCoordinates(elem: any) {
     const liElem = elem.current;
-    const ulElem: any = document.getElementById('ul');
+    const ulElem  = document.getElementById('ul') as Element;
     const rectUl = ulElem.getBoundingClientRect();
     const rectLi = liElem.getBoundingClientRect();
     return Math.abs(rectUl.y - rectLi.y)

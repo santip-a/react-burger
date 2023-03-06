@@ -7,7 +7,7 @@ import { Loader } from '../../loader/loader';
 import { placeOrderDate } from '../../../utils/utils';
 import { useEffect, FC } from 'react';
 import { wsConnectionStart, wsConnectionClosed } from '../../../services/actions/wsAction'
-import {TBurger} from '../../../utils/types'
+import {TBurger, TItemIngredient} from '../../../utils/types'
 
 
 interface IIngredientItem {
@@ -22,11 +22,11 @@ interface IIngredientItem {
 const OrderInfo: FC = () => {
   const params: {id: string} = useParams();
   const location = useLocation();
-  const data = useSelector(state => state.webSoket.orders);
+  const data: TBurger[] = useSelector(state => state.webSoket.orders);
   let status = null;
   let statusColor = null;
   let totalPrice = 0;
-  const dataIngredients = useSelector(state => state.ingredients.data);
+  const dataIngredients: TItemIngredient[] = useSelector(state => state.ingredients.data);
   const dispatch = useDispatch();
   let uniqueIngredients: string[] = [];
   let ingredientItem: IIngredientItem = {
@@ -37,7 +37,11 @@ const OrderInfo: FC = () => {
     quantity: 0,
   };
 
-  const burger: any = data.find((elem: TBurger) => elem._id === params.id);
+
+ 
+  const burger = data.find((elem) => elem._id === params.id);
+
+ 
   
   const f = () => {
     return location.state ? orderInfoStyle.numberOrderModal : orderInfoStyle.numberOrder
@@ -81,26 +85,32 @@ const OrderInfo: FC = () => {
   }
 
   function getQuantity(elem: string) {
-    let result = burger.ingredients.reduce((sum: number, current: string) => current === elem ? sum = sum + 1 : sum, 0);
-    return result
+    if (burger) {
+      let result = burger.ingredients.reduce((sum: number, current: string) => current === elem ? sum = sum + 1 : sum, 0);
+      return result
+    }
+    return 0
   }
 
-  const getImgIngredient = (ingredients: any) => {
-    let itemIngredient: any = dataIngredients.find((item: any) => item._id === ingredients);
+  const getImgIngredient = (ingredients: string) => {
+    let itemIngredient: TItemIngredient | undefined = dataIngredients.find((item: TItemIngredient) => item._id === ingredients);
     const quantity = getQuantity(ingredients)
-    totalPrice = totalPrice + (itemIngredient.price * quantity);
-    ingredientItem = {
-      img: itemIngredient.image_mobile,
-      name: itemIngredient.name,
-      price: itemIngredient.price,
-      id: itemIngredient._id,
-      quantity: quantity,
+    if (itemIngredient) {
+      totalPrice = totalPrice + (itemIngredient.price * quantity);
+      ingredientItem = {
+        img: itemIngredient.image_mobile,
+        name: itemIngredient.name,
+        price: itemIngredient.price,
+        id: itemIngredient._id,
+        quantity: quantity,
+      }
     }
   }
 
   if (!burger) {
     return <Loader />;
   }
+
 
   return (
     <section className={location.state ? orderInfoStyle.sectionModal : orderInfoStyle.section}>

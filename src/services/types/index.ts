@@ -5,12 +5,12 @@ import { Action, ActionCreator } from 'redux';
 
 export type RootState = ReturnType<typeof store.getState>; 
 
-type TApplicationActions = TAllActions;
+//type TApplicationActions = TAllActions;
 
 
 // Типизация thunk в нашем приложении
 export type AppThunk<TReturn = void> = ActionCreator<
-  ThunkAction<TReturn, Action, RootState, TApplicationActions>
+  ThunkAction<TReturn, Action, RootState, TAllActions>
 >;
 
 // Типизация метода dispatch для проверки на валидность отправляемого экшена

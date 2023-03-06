@@ -12,14 +12,14 @@ import {
   TAuthUserActions
 } from '../actions/auth-user';
 
-type TUserAuth = {
+export type TUserAuth = {
   name?: string 
   email?: string 
   password?: string 
 }
 
-type TInitialAuthUser = {
-  user: TUserAuth | {} ,
+export type TInitialAuthUser = {
+  user: TUserAuth  ,
   userAuth?: boolean,
 
   tokenUpdated?: boolean,

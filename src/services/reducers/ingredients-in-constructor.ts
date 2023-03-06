@@ -6,15 +6,30 @@ import {
   RESET_IN_TO_CONSTRUCTOR,
   TIngredientsInConstructorActions
 } from '../actions/ingredients-in-constructor';
+import {TItemIngredient} from '../../utils/types'
 
 type TInitialConstructor = {
-  filling: any[] | any[] ,
-  bunType: {} | any,
+  filling: TItemIngredient[] ,
+  bunType: TItemIngredient ,
 }
 
 const initialConstructor: TInitialConstructor = {
   filling: [],
-  bunType: {},
+  bunType: {	
+    calories: 0,
+    carbohydrates: 0,
+    fat: 0,
+    idInBurger: '',
+    image: '',
+    image_large: '',
+    image_mobile: '',
+    name: '',
+    price: 0,
+    proteins: 0,
+    type: '',
+    __v: 0,
+    _id: ''
+  },
 }
 
 
@@ -37,7 +52,7 @@ export const ingredientsInConstructor = (state = initialConstructor, action: TIn
     case DEL_FILLING_T0_CONSTRUCTOR: {
       return {
         ...state,
-        filling: state.filling.filter((el: any) => el.idInBurger !== action.payload.idInBurger)
+        filling: state.filling.filter((el: TItemIngredient) => el.idInBurger !== action.payload.idInBurger)
       }
     }
 
@@ -51,7 +66,21 @@ export const ingredientsInConstructor = (state = initialConstructor, action: TIn
     case RESET_IN_TO_CONSTRUCTOR: {
       return {
         ...state,
-        bunType: {},
+        bunType: {
+          calories: 0,
+          carbohydrates: 0,
+          fat: 0,
+          idInBurger: '',
+          image: '',
+          image_large: '',
+          image_mobile: '',
+          name: '',
+          price: 0,
+          proteins: 0,
+          type: '',
+          __v: 0,
+          _id: ''
+        },
         filling: []
       }
     }

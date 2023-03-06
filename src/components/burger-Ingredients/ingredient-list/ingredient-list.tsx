@@ -2,19 +2,19 @@ import ingredientList from './ingredient-list.module.css';
 import IngredientItem from '../ingredient-item/ingredient-item';
 import PropTypes from 'prop-types';
 import { useSelector } from '../../../services/types/hooks';
-import  { FC } from "react";
+import  { FC, MutableRefObject }  from "react";
 import {TItemIngredient} from '../../../utils/types'
 
 type TIngredientList = {  
   elem: {nameEn: string, nameRu: string},
   onClose: () => void,
-  bunRef: React.MutableRefObject<any>
-  sauceRef: React.MutableRefObject<any>
-  mainRef: React.MutableRefObject<any>
-} 
+  bunRef: React.MutableRefObject<HTMLUListElement | undefined>
+  sauceRef: React.MutableRefObject<HTMLUListElement | undefined>
+  mainRef: any
+}
 
 const IngredientList: FC<TIngredientList> = ({ elem, onClose, bunRef, sauceRef, mainRef }) => {
-  let refUl;
+  let refUl
   if (elem.nameEn === 'bun') { refUl = bunRef }
   if (elem.nameEn === 'sauce') { refUl = sauceRef }
   if (elem.nameEn === 'main') { refUl = mainRef }

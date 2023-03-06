@@ -6,12 +6,12 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 const Page404 = () => {
   const history = useHistory();
 
-  const goToMainPage = (e: any) => {
+  const goToMainPage = (e: React.SyntheticEvent<Element, Event>) => {
     e.preventDefault();
     history.replace({ pathname: '/' });
   }
 
-  const goToBackPage = (e: any) => {
+  const goToBackPage = (e: React.SyntheticEvent<Element, Event>) => {
     e.preventDefault();
     history.goBack();
   }

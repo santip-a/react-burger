@@ -24,12 +24,11 @@ const BurgerConstructor: FC= () => {
   const [modalOpen, setModalOpen] = React.useState(false);
   const bun = useSelector((state) => state.ingredientsInConstructor.bunType);
   const fillings = useSelector((state) => state.ingredientsInConstructor.filling);
-  const orderNumber = useSelector((state) => state.orderDetalis.order.order);
+  const orderNumber = useSelector((state) => state.orderDetalis.order);
   const userAuth = useSelector((state) => state.authUser.userAuth);
   const dispatch = useDispatch();
   const history = useHistory();
   const loadingOrder = useSelector((state) => state.orderDetalis.isLoading);
-  // let elemIn: any = {};
   let elemIn: TItemIngredient = {
     calories: 0,
     carbohydrates: 0,
@@ -45,7 +44,6 @@ const BurgerConstructor: FC= () => {
     __v: 0,
     _id: ''
   } ;
-
 
   const priceFillings = useMemo(() => {
     return fillings.reduce(function (sum: number, current: TItemIngredient) {
@@ -65,8 +63,8 @@ const BurgerConstructor: FC= () => {
 
   const requestNumberOrder = (listId: string[]) => {
     if (userAuth) {
-      setModalOpen(true);
       dispatch(getOrder(listId));
+      setModalOpen(true);      
     }
     else {
       history.replace({ pathname: '/login' })
@@ -74,7 +72,7 @@ const BurgerConstructor: FC= () => {
   }
 
   //===== функция добавления игредиента в конструкор =========
-  function addToConstructor(item: TItemIngredient | unknown) {
+  function addToConstructor(item: TItemIngredient) {
     dispatch(checkIngredientType(item));
   }
 
@@ -124,7 +122,7 @@ const BurgerConstructor: FC= () => {
 
   const [, dropTarget] = useDrop({
     accept: "ingdredietItem",
-    drop(item) {
+    drop(item: TItemIngredient) {
       addToConstructor(item);
     },
   });
@@ -206,10 +204,10 @@ const BurgerConstructor: FC= () => {
           <Loader />
       )}
 
-      {orderNumber && (
+      {orderNumber.success && (
         modalOpen &&
         <Modal onClose={closeModal}>
-          <OrderDetails number={orderNumber.number} />
+          <OrderDetails number={orderNumber.order.number} />     
         </Modal>
       )}
     </section>

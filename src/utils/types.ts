@@ -1,5 +1,5 @@
 export interface ILocationState {
-  background: {
+	background: {
 		pathname: string;
 		search: string;
 		hash: string;
@@ -37,4 +37,33 @@ export type TBurger = {
 	status: string
 	updatedAt: string
 	_id: string
+}
+
+export type TUserReg = {
+	name: string
+	email: string
+	password: string
+}
+
+
+export type TOrder = {
+	name: string
+	order: {
+		createdAt: string
+		ingredients: TItemIngredient[]
+		length: number
+		name: string
+		number: number
+		owner: {
+			createdAt: string
+			email: string
+			name: string
+			updatedAt: string
+		}
+		price: number
+		status: string
+		updatedAt: string
+		_id: string
+	}
+	success: boolean
 }

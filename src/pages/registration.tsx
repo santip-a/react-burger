@@ -10,24 +10,24 @@ const Registration = () => {
 	const { values, handleChange } = useForm({ name: '', email: '', password: '' });
 	const [visiblePassword, setvisiblePassword] = React.useState<"text" | "email" | "password">('password');
 	const [visiblePasswordIcon, setvisiblePasswordIcon] = React.useState(false);
-	const inputRef: any = React.useRef(null);
+	const inputRef = React.useRef<HTMLInputElement>(null);
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const isAuth = useSelector(state => state.authUser.userAuth);
 
 	const onIconClick = () => {
-		setTimeout(() => inputRef.current.focus(), 0);
+		setTimeout(() => inputRef.current!.focus(), 0);
 		alert('Icon Click Callback');
 	}
 
 	const navigation = React.useCallback(
-		(e: any, path: string,) => {
+		(e: React.SyntheticEvent<Element, Event>, path: string,) => {
 			history.replace({ pathname: path });
 		},
 		[history]
 	);
 
-	const toggleVisiblePassword = (e: any) => {
+	const toggleVisiblePassword = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
 		e.preventDefault();
 		if (visiblePassword === 'password') {
 			setvisiblePassword('text');
@@ -63,7 +63,7 @@ const Registration = () => {
 						type={'text'}
 						placeholder={'Имя'}
 						onChange={e => handleChange(e)}
-						value={values.name}
+						value={values.name ? values.name : ''}
 						name={'name'}
 						error={false}
 						ref={inputRef}
@@ -77,7 +77,7 @@ const Registration = () => {
 						type={'text'}
 						placeholder={'E-mail'}
 						onChange={e => handleChange(e)}
-						value={values.email}
+						value={values.email ? values.email : ''}
 						name={'email'}
 						error={false}
 						ref={inputRef}
@@ -91,7 +91,7 @@ const Registration = () => {
 						type={visiblePassword}
 						placeholder={'Пароль'}
 						onChange={e => handleChange(e)}
-						value={values.password}
+						value={values.password ? values.password : ''}
 						name={'password'}
 						error={false}
 						ref={inputRef}
