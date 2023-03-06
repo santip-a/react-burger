@@ -7,10 +7,11 @@ import './vendor/normalize.css';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { rootReducer } from './services/reducers';
+////import { rootReducer } from './services/reducers';
 import { BrowserRouter as Router } from 'react-router-dom';
-import {socketMiddleware} from './services/middleware/middleware';
-import {wsActions} from './services/actions/wsAction'
+//import {socketMiddleware} from './services/middleware/middleware';
+//import {wsActions} from './services/actions/wsAction'
+import {store} from './services/store/store'
 
 declare global {
   interface Window {
@@ -18,16 +19,16 @@ declare global {
   }
 }
 
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    : compose;
+// const composeEnhancers =
+//   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+//     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+//     : compose;
 
-const wsUrl = 'wss://norma.nomoreparties.space/orders';     
+// const wsUrl = 'wss://norma.nomoreparties.space/orders';     
 
-const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsUrl, wsActions)));
+// const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsUrl, wsActions)));
 
-const store = createStore(rootReducer, enhancer);
+// const store = createStore(rootReducer, enhancer);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
